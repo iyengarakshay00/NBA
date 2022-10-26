@@ -1,6 +1,8 @@
 # Proposal
 
 ## Research topic
+Our research topic deals with NBA Basketball Players.
 
 ## Data availability
+We will take a look at NBA Stats.
 
