@@ -1,6 +1,6 @@
 --- 
 title: "NBA Project"
-author: "Akshay Iyengar, Conor Ryan, Yunchen Jiang"
+author: "Yunchen Jiang, Akshay Iyengar, Conor Ryan"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
