@@ -1,7 +1,7 @@
 # Proposal
 
 ## Research topic
-Our research topic deals with NBA Basketball Players.
+Our research topic deals with NBA Basketball Players. We are researching the basketball player stats. Since that is such a big topic, we can narrow it down by years and teams. We can randomly sample a couple of teams and do the pre-covid years and post-covid which was around 2020. This was known as the bubble phenomena for the NBA. Because of this, we can start doing a topic around if player’s stats decreased or increased before, during, and after the bubble. We can also see what teams ran hot during these years. With this information, in mind we can create visuals that hopefully debunk these rumors.
 
 ## Data availability
 We will take a look at NBA Stats from Espn.
