@@ -4,5 +4,12 @@
 Our research topic deals with NBA Basketball Players. We are researching the basketball player stats. Since that is such a big topic, we can narrow it down by years and teams. We can randomly sample a couple of teams and do the pre-covid years and post-covid which was around 2020. This was known as the bubble phenomena for the NBA. Because of this, we can start doing a topic around if player’s stats decreased or increased before, during, and after the bubble. We can also see what teams ran hot during these years. With this information, in mind we can create visuals that hopefully debunk these rumors.
 
 ## Data availability
-We will take a look at NBA Stats from Espn.
+We will take a look at NBA Stats from Espn.We are going to different sites which contains sports data so ESPN, cbs, etc sites. We need to collect data for different years so we are going to have to go back and check out the timelines for those pages. We are definitely going to have to web scrape this data into a csv or try to format the data into a table. Main news and sports crews own these sites and maintain this data so we must be careful when getting the data and not be interrupting privacy policies and protections.  Data quality may not be good as it is old and may be unclean or dirty. We definitely will have to clean the data and make sure that strings aren’t just imported but also numbers. If we have questions we can probably contact owners of those sites to see if we need to correct any of the data.
+
+Bibliography:
+[Wikipedia] (https://en.m.wikipedia.org/wiki/2020_NBA_Bubble)
+
+[StatMuse] (https://www.statmuse.com/nba/ask/best-offensive-rating-team-list-in-the-bubble)
+
+[Espn] (https://www.espn.com/nba/standings/_/season/2020)
 
