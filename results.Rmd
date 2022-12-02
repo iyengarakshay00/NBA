@@ -1,7 +1,7 @@
 # Results
 ```{r}
 #take data from espn bubble link
-#steps: rvest, get table, make a couple of graphs
+#steps: rvest, get table and clean, make a couple of graphs
 library(rvest)
 library("dplyr")
 site = read_html("https://www.espn.com/nba/standings/_/season/2020")
@@ -11,10 +11,31 @@ east_rec = table[2] %>% html_table(fill = TRUE)
 west_team = table[3] %>% html_table(fill = TRUE)
 west_rec = table[4] %>% html_table(fill = TRUE)
 east_df = merge(east_team, east_rec, by = "row.names", all.x = TRUE)
+
+#change index val to numeric to sort by position and change column names to team and position
+#add column to denote either west or east
+#do this for both west and east
+class(east_df$Row.names) = "Numeric"
+east_df$Row.names = as.integer(east_df$Row.names)
+east_df = arrange(east_df, east_df$Row.names)
+colnames(east_df)[1] <- "Position"
+colnames(east_df)[2] <- "Team"
+east_df = east_df %>% mutate(CAT = 'E')
 east_df
 
 west_df = merge(west_team, west_rec, by = "row.names", all.x = TRUE)
+class(west_df$Row.names) = "Numeric"
+west_df$Row.names = as.integer(west_df$Row.names)
+west_df = arrange(west_df, west_df$Row.names)
+colnames(west_df)[1] <- "Position"
+colnames(west_df)[2] <- "Team"
+west_df = west_df %>% mutate(CAT = 'W')
 west_df
+
+#union the tables together and sort by losses ascending
+
+new_df = union(east_df, west_df) %>% arrange(L) %>% mutate(YEAR = '2019')
+new_df
 
 #
 ```

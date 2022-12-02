@@ -1,8 +1,12 @@
 # Data 
 
 ## Sources
+Talk about getting frome espn, webscraping data from the site is legal and ethical as we don't manipulate the numbers
 
 ## Cleaning / transformation
 
+Cleaning is done in the results section with the code, talk about getting data in not useful form, changing data types, converting, adding columns, binding into one table, adding variable for year and divisions
+
 ## Missing value analysis
+Add a table using visna to show missing info and describe
 
