@@ -42,7 +42,7 @@ df_2019$ACT_TEAM[df_2019$ACT_TEAM == 'NYN'] = 'NYK'
 df_2019$ACT_TEAM[df_2019$ACT_TEAM == 'WSH'] = 'WAS'
 df_2019$ACT_TEAM[df_2019$ACT_TEAM == 'GSG'] = 'GSW'
 
-df_2019
+#df_2019
 #edit NON to NOP, NYN to NYK, WSH to WAS, GSG to GSW
 
 
@@ -86,7 +86,7 @@ df_2020$ACT_TEAM[df_2020$ACT_TEAM == 'NYN'] = 'NYK'
 df_2020$ACT_TEAM[df_2020$ACT_TEAM == 'WSH'] = 'WAS'
 df_2020$ACT_TEAM[df_2020$ACT_TEAM == 'GSG'] = 'GSW'
 
-df_2020
+#df_2020
 
 site = read_html("https://www.espn.com/nba/standings/_/season/2022")
 table = html_nodes(site, "table")
@@ -127,7 +127,7 @@ df_2021$ACT_TEAM[df_2021$ACT_TEAM == 'NYN'] = 'NYK'
 df_2021$ACT_TEAM[df_2021$ACT_TEAM == 'WSH'] = 'WAS'
 df_2021$ACT_TEAM[df_2021$ACT_TEAM == 'GSG'] = 'GSW'
 
-df_2021
+#df_2021
 
 #
 df_all = union_all(df_2019, df_2020)
