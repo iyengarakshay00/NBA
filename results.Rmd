@@ -1,1 +1,21 @@
 # Results
+```{r}
+#take data from espn bubble link
+#steps: rvest, get table, make a couple of graphs
+library(rvest)
+library("dplyr")
+site = read_html("https://www.espn.com/nba/standings/_/season/2020")
+table = html_nodes(site, "table")
+east_team = table[1] %>% html_table(fill = TRUE) 
+east_rec = table[2] %>% html_table(fill = TRUE)
+west_team = table[3] %>% html_table(fill = TRUE)
+west_rec = table[4] %>% html_table(fill = TRUE)
+east_df = merge(east_team, east_rec, by = "row.names", all.x = TRUE)
+east_df
+
+west_df = merge(west_team, west_rec, by = "row.names", all.x = TRUE)
+west_df
+
+#
+```
+
