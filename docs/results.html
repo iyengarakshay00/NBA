@@ -23,7 +23,7 @@
 <meta name="author" content="Yunchen Jiang, Akshay Iyengar, Conor Ryan" />
 
 
-<meta name="date" content="2022-12-01" />
+<meta name="date" content="2022-12-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -108,6 +108,7 @@
             <section class="normal" id="section-">
 <div id="results" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Results<a href="results.html#results" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Here we grab the data, which is referred to in the data section. We end up grabbing from espn and merging the tables together based on the teams, conferences, and years. This is talked about more in the data section.</p>
 <pre><code>##    Position                            Team  W  L   PCT   GB  HOME  AWAY  DIV  CONF   PPG OPP.PPG DIFF STRK
 ## 1         1         1z --MILMilwaukee Bucks 56 17 0.767    -  30-5 26-12 13-1  37-7 118.7   108.6 10.1   L1
 ## 2         2         2y --TORToronto Raptors 53 19 0.736  2.5 26-10  27-9  9-5 34-11 112.8   106.5  6.3   W4
@@ -221,6 +222,10 @@
 ## 54 1-9   E 2020      TOR
 ## 55 5-5   W 2020      MIN
 ##  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 35 rows ]</code></pre>
+<p>We start with the first graph below based on the NBA data, where we see the fluctuations in points in a stacked bar chart where we see by year if the bar lengthens or gets smaller for PPG. This will help determine if offensive identity was different from the bubble than years past.
+<img src="finalproj_files/figure-html/unnamed-chunk-45-1.png" width="672" />
+In the next graph, we want to plot opponents points per game versus points per game scored. We are going to take a specific look at 2019 so we can plot offensive and defensive prowess and see what teams in which conferences benefitted that year.
+<img src="finalproj_files/figure-html/unnamed-chunk-46-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-46-2.png" width="672" /></p>
 
 </div>
             </section>
