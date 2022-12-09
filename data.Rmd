@@ -1,7 +1,9 @@
 # Data 
 
 ## Sources
-Talk about getting frome espn, webscraping data from the site is legal and ethical as we don't manipulate the numbers
+Talk about getting from espn: 
+We got data from ESPN. For part of our data, I went to scrape the data and get it from ESPN. Because of this, we were able to get a bunch of tables from different years and teams. We needed to make sure that webscraping the data from the site is legal and ethical. That is why we didn't edit any of the numbers and made sure the data was in the correct format.
+
 
 ## Cleaning / transformation
 

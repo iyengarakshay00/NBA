@@ -1,4 +1,5 @@
 # Results
+Here we grab the data, which is referred to in the data section. We end up grabbing from espn and merging the tables together based on the teams, conferences, and years. This is talked about more in the data section.
 ```{r}
 #take data from espn bubble link
 #steps: rvest, get table and clean- repeat for 2020 and 2021 - boom time series, make a couple of graphs
@@ -132,6 +133,42 @@ df_2021$ACT_TEAM[df_2021$ACT_TEAM == 'GSG'] = 'GSW'
 #
 df_all = union_all(df_2019, df_2020)
 df_all = union_all(df_all, df_2021)
+
 df_all
+```
+We start with the first graph below based on the NBA data, where we see the fluctuations in points in a stacked bar chart where we see by year if the bar lengthens or gets smaller for PPG. This will help determine if offensive identity was different from the bubble than years past.
+```{r}
+# make a couple of graphs
+#create a bar chart based on ppg per year per team
+library(ggplot2)
+library(tidyr)
+
+ggplot(df_all, aes(x = PPG, y = ACT_TEAM, fill = YEAR)) +
+  geom_bar(stat = "identity")
+```
+In the next graph, we want to plot opponents points per game versus points per game scored. We are going to take a specific look at 2019 so we can plot offensive and defensive prowess and see what teams in which conferences benefitted that year.
+```{r}
+# make a couple of graphs
+#create a bar chart based on ppg per year per team
+library(ggplot2)
+library(tidyr)
+#create longer field based on using tidy pacakge so we can plot points per game and points againsts
+#filter by year so 2019 represents bubble and make graph clear by getting seperate east and west categorys
+df_adj = gather(df_all, PPG_WL, VAL, PPG:OPP.PPG)
+df_adj_2019_e = df_adj %>% 
+  filter(YEAR == "2019") %>%
+  filter(CAT == 'E')
+
+df_adj_2019_w = df_adj %>% 
+  filter(YEAR == "2019") %>%
+  filter(CAT == 'W')
+
+ggplot(df_adj_2019_e, aes(x = ACT_TEAM, y = VAL, fill = PPG_WL)) +
+  geom_bar(stat = "identity", position = 'dodge')+
+  ggtitle("EAST CONFERENCE BUBBLE PPG OFFENSIVE AND DEFENSIVE")
+
+ggplot(df_adj_2019_w, aes(x = ACT_TEAM, y = VAL, fill = PPG_WL)) +
+  geom_bar(stat = "identity", position = 'dodge')+
+  ggtitle("WEST CONFERENCE BUBBLE PPG OFFENSIVE AND DEFENSIVE")
 ```
 
