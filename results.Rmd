@@ -172,3 +172,40 @@ ggplot(df_adj_2019_w, aes(x = ACT_TEAM, y = VAL, fill = PPG_WL)) +
   ggtitle("WEST CONFERENCE BUBBLE PPG OFFENSIVE AND DEFENSIVE")
 ```
 
+```{r}
+# make a couple of graphs
+#create a bar chart based on position for team
+top_3 = select(df_all, ACT_TEAM, Position, YEAR, CAT) %>%
+  filter(Position <= 3) %>%
+  filter(YEAR == 2019)
+top_3
+#note teams equal MIL, TOR, LAL, LAC, BOS, DEN
+teams = c('MIL', 'TOR', 'LAL','LAC','BOS','DEN')
+
+# https://community.rstudio.com/t/how-to-filter-a-dataframe-based-on-a-list-of-values-from-one-column/79881/2- use link to help with filtering 
+
+trend_team = select(df_all, ACT_TEAM, Position, W, YEAR, CAT) %>%
+filter(ACT_TEAM %in% teams)
+
+# https://stackoverflow.com/questions/27082601/ggplot2-line-chart-gives-geom-path-each-group-consist-of-only-one-observation - use this for numeric graph path conversion
+trend_team$YEAR = as.numeric(as.character(trend_team$YEAR))
+trend_team
+ggplot(trend_team, aes(x = YEAR, y = Position, colors = ACT_TEAM))+
+  geom_path(aes(color = ACT_TEAM))+
+  scale_y_reverse()
+
+
+```
+
+```{r}
+library(lubridate) 
+# make a couple of graphs
+#https://www.geeksforgeeks.org/how-to-add-labels-over-each-bar-in-barplot-in-r/- use this for geom_text
+trend_team
+ggplot(trend_team, aes(x = YEAR, y = W, colors = ACT_TEAM))+
+  geom_path(aes(color = ACT_TEAM))+
+  geom_text(aes(label = signif(W)), nudge_y = 1)
+
+
+```
+
