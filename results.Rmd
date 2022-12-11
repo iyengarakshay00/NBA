@@ -46,7 +46,7 @@ ggplot(df_adj_2019_w, aes(x = ACT_TEAM, y = VAL, fill = PPG_WL)) +
 top_3 = select(df_all, ACT_TEAM, Position, YEAR, CAT) %>%
   filter(Position <= 3) %>%
   filter(YEAR == 2019)
-top_3
+#top_3
 #note teams equal MIL, TOR, LAL, LAC, BOS, DEN
 teams = c('MIL', 'TOR', 'LAL','LAC','BOS','DEN')
 
@@ -57,7 +57,7 @@ filter(ACT_TEAM %in% teams)
 
 # https://stackoverflow.com/questions/27082601/ggplot2-line-chart-gives-geom-path-each-group-consist-of-only-one-observation - use this for numeric graph path conversion
 trend_team$YEAR = as.numeric(as.character(trend_team$YEAR))
-trend_team
+#trend_team
 ggplot(trend_team, aes(x = YEAR, y = Position, colors = ACT_TEAM))+
   geom_path(aes(color = ACT_TEAM))+
   scale_y_reverse()
