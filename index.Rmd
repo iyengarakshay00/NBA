@@ -7,3 +7,4 @@ site: bookdown::bookdown_site
 
 # Introduction
 
+We chose to explore various components of NBA data because we all have a common interest in the NBA. For any readers unfamiliar, the NBA is the National Basketball Association and is the highest level of professional basketball played in North America. As a sport, basketball provides a rich opportunity for data collection, which is why we were interested in seeing if we could create interesting visualizations from it. All parts of the sport -- from the many different teams and players, to the many different head-to-head games throughout the season, to the granular play-by-play shooting activity -- provide potentially interesting areas for us to explore within data.
