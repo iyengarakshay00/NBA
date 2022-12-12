@@ -11,6 +11,8 @@ library(lubridate)
 
 
 # Results
+
+### Seasonal Data Bubble Year and Beyond
 Here we grab the data, which is referred to in the data section. We end up grabbing from espn and merging the tables together based on the teams, conferences, and years. This is talked about more in the data section.
 ```{r}
 df_all = read.csv('./data/files/Season.csv')

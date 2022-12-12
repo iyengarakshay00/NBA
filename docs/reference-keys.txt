@@ -11,6 +11,7 @@ missing-value-analysis
 season-data-1
 shot-data-1
 results
+seasonal-data-bubble-year-and-beyond
 shot-data-2
 interactive-component
 conclusion
