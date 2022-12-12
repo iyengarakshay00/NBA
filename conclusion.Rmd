@@ -1,3 +1,5 @@
 # Conclusion
 
+The main takeaways of our exploration start with the process of beginning a data science visualization project.
+
 In regards to shot data, in the future we'd like to pull data for all players instead of only the top 100. With enough time and resources, this should be possible. Doing so would roughly double our dataset, so hopefully the trends we've observed here would hold.

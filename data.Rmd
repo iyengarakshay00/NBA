@@ -6,8 +6,8 @@ library(redav)
 ```
 
 ## Sources
-Talk about getting from espn: 
-We got data from ESPN. For part of our data, I went to scrape the data and get it from ESPN. Because of this, we were able to get a bunch of tables from different years and teams. We needed to make sure that webscraping the data from the site is legal and ethical. That is why we didn't edit any of the numbers and made sure the data was in the correct format.
+
+We got data from ESPN. For part of our data, I went to scrape the data and get it from ESPN. Because of this, we were able to get a bunch of tables from different years and teams. We needed to make sure that webscraping the data from the site is legal and ethical. That is why we didn't edit any of the numbers and made sure the data was in the correct format. After using a library called Rvest, I was able to grab both western and eastern conferences as a table. Then, I repeated doing this for multiple seasons in order to get data for all teams and growth across the years. Some of the problems with the table was that it wasn't in order like the ESPN by position. The table wasn't combined and there wasn't indicators for years or conferences. The teams also were in a format that wouldn't be able to be grouped in a graph. For example, the team was like "Milwakee Bucksz" which is different than the team name because it had the letter or position combined. This took some cleaning and transformation, which will get talked about below. There were about 90 records considering 3 seasons and 30 NBA teams. Some of the variables are team name, team name adjusted- which is a clean abbreviated name for team, conference type- western or eastern, year- when season started, and more. Some of the numerical variables dealt with points per game, opponent points per game, wins, and losses. 
 
 ### Shot data
 We pulled granular shot data directly from the NBA's public APIs for games from 2017 to 2022. The NBA itself collects and publishes this data. They make this data available for use (according to their [Terms of Use](https://www.nba.com/termsofuse)) so long as it is not used for profit, and as long as NBA.com is given attribution. Consider this that attribution, so usage of this data is permissible for this project.
@@ -23,12 +23,19 @@ Extracting this data took a substantial amount of time and effort, which won't n
 
 ## Cleaning / transformation
 
-Cleaning is done in the results section with the code, talk about getting data in not useful form, changing data types, converting, adding columns, binding into one table, adding variable for year and divisions
+Cleaning is done in the data folder section with the code files. The cleaning is always an ongoing process in the data science process. Starting with the seasonal data, getting it into a tabular csv form was a lengthy process. Extracting using rvest gets the table into separated table values. There were 4 tables for one year using rvest. Each table represented one of two things either a list of teams or the list of variable values related to the team for the season performance per conference. We had to join the the teams with the list of values using its row names. Later on, row names was converted into an integer so we could have a position of the team within the respective conference. We also added a category column to indicate whether eastern or western conference something that might be useful to denote. Once that was done, the eastern and western conference tables were merged into one using a union command. We added a year, which would be converted to an integer to denote the start of the season for that table. This was repeated for the next two following seasons. In order to get a big table full of all 3 seasons we union_all the data frames to get all value combinations for the final data frame for season performances. A unique thing while looking at the data set was the name for the team was combined with positions/bye performances, which were denoted by special letters such as y or z. In order to clean this, we created a column called ACT_TEAM, which is an abbreviation of the letters of the team. Using a regular expression formula, we were able to extract the 3 NBA letter. Now, not everything can be accurate to the NBA abbreviation, which is why human oversight over data is so important. We were able to adapt and change 4 of the abbreviations to match the NBA ones.
 
 The shot data did not require much cleaning / transformation. We did most of it in the data pull Python script; it only involved things like selecting and renaming columns. In R, we also did a few simple things to coerce column types and appropriately label the different play periods (pre, during and post-bubble) so we could visualize any differences.
 
 ## Missing value analysis
-Add a table using visna to show missing info and describe
+Here is one of the tables for the seasonal data. The seasons data has no missing variable as you can see and no rows are missing. There is a complete case file for all the rows showing that there is no missing data or patterns. This is because when getting the ESPN data, it contains all of the statistics for the season and there is no missing data from the site. This is definitely one of the perks of getting data directly from the source itself.
+
+```{r}
+library(redav)
+df_all = read.csv('./data/files/Season.csv')
+plot_missing(df_all, percent = FALSE)
+```
+
 
 
 ### Shot data
