@@ -1,2 +1,2 @@
 # Conclusion
-
+The main takeaways of our exploration start with the process of beginning a data science visualization project.
