@@ -7,6 +7,7 @@ library(ggforce)
 library(cowplot)
 library(forcats)
 library(lubridate) 
+library(viridis)
 ```
 
 
@@ -19,16 +20,24 @@ df_all = read.csv('./data/files/Season.csv')
 
 ```
 
-We start with the first graph below based on the NBA data, where we see the fluctuations in points in a stacked bar chart where we see by year if the bar lengthens or gets smaller for PPG. Here we can see diverging bars where some of the teams have less PPG than years before. For example, Milwaukee increased from the bubble year which is 2019 whereas Denver decreased in PPG. This will help determine if offensive identity was different from the bubble than years past.
+We start with the first graph below based on the NBA data, where we see the fluctuations in points in a Cleveland dot chart where we see by year if the dots change per team per year. We did this where we organized from top down by year 2019 PPG descending order. Here we can see diverging points where some of the teams have less PPG than years before. For example, Milwaukee increased from the bubble year which is 2019 whereas Denver decreased in PPG. Charlotte increases steadily each year in offensive points per game. Also, other patterns explored can show how PPG in 2019 related to playoff runs or playoff positions.This chart will help determine if offensive identity was different from the bubble than years past.
+
+
 ```{r}
 # make a couple of graphs
 #create a bar chart based on ppg per year per team
-
-ggplot(df_all, aes(x = PPG, y = ACT_TEAM, fill = YEAR)) +
-  geom_bar(stat = "identity")
+ggplot(df_all, aes(PPG, fct_reorder2(ACT_TEAM, YEAR=="2019", PPG, .desc = FALSE),color = as.factor(YEAR))) +
+  geom_point() + 
+  ggtitle("Teams sorted by 2019 PPG") +
+  labs(color = "YEAR\n")+
+  ylab("Team") +
+  theme_linedraw()+
+  scale_fill_viridis(discrete = TRUE)
 ```
 
+
 In the next graph, we want to plot opponents points per game versus points per game scored. We are going to take a specific look at 2019 so we can plot offensive and defensive prowess and see what teams in which conferences benefited that year. Specifically, we separate by conference and see in-depth analysis with teams. During the bubble, we can see from the graph that some teams like Milwaukee and Boston had both offensive and defensive prowess from the gap in the bars of opponent ppg and ppg. Some teams like Phoenix had both offesnive and defensive ability almost equal.
+
 ```{r}
 # make a couple of graphs
 #create a bar chart based on ppg per year per team
@@ -53,7 +62,9 @@ ggplot(df_adj_2019_w, aes(x = ACT_TEAM, y = VAL, fill = PPG_WL)) +
   ggtitle("WEST CONFERENCE BUBBLE PPG OFFENSIVE AND DEFENSIVE")
 ```
 
+
 For the next graph, we can see that there are three teams that performed well from each conference in 2019. We get to take a deeper look at it and see if their position changed over the years. This can help show the audience that position of teams change over the years. From this graph, we can see LAL somehow continuously goes down considering they are the number one team from the bubble. Toronto especially takes a massive plummet in its ranking over the next year. Boston overall goes up in its ranking and we see that today especially how it performs in the NBA.
+
 
 ```{r}
 # make a couple of graphs
@@ -81,7 +92,8 @@ ggplot(trend_team, aes(x = YEAR, y = Position, colors = ACT_TEAM))+
 
 ```
 
-We get to see some the trending three teams from the bubble again from each conference. The number of wins is shown for those same teams. We can now see another statistic from them over the yers. A cool feature is that you can label them with numbers which is what we precisely do with the lines to see the patterns. We can see the graph from below matches some of the position pattern from above. This makes sense because position and record wins/losses are related to each other. We can see that Toronto might have just had an outlier year based on the number of losses. We could potentially attribute the year before to luck or this one to an injuries.
+
+We get to see some the trending three teams from the bubble again from each conference. The number of wins is shown for those same teams. We can now see another statistic from them over the years. A cool feature is that you can label them with numbers which is what we precisely do with the lines to see the patterns. We can see the graph from below matches some of the position pattern from above. This makes sense because position and record wins/losses are related to each other. We can see that Toronto might have just had an outlier year based on the number of losses. We could potentially attribute the year before to luck or this one to an injuries.
 
 ```{r}
 
