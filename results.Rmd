@@ -1,3 +1,12 @@
+```{r}
+# PUT ALL LIBRARIES UP HERE
+library(ggplot2)
+library(tidyverse)
+library(ggforce)
+library(cowplot)
+```
+
+
 # Results
 Here we grab the data, which is referred to in the data section. We end up grabbing from espn and merging the tables together based on the teams, conferences, and years. This is talked about more in the data section.
 ```{r}
@@ -209,3 +218,199 @@ ggplot(trend_team, aes(x = YEAR, y = W, colors = ACT_TEAM))+
 
 ```
 
+## Shot data
+As noted in the data sources section, for this data, we only pulled shot data for the top 100 players each season. The graph below shows that doing so, regardless of season, generally accounts for about 50% of the season's shots. 
+
+First, this justifies our decision to only pull the first 100 players' shots. This gave us a substantial amount of data without needing to spend time retrieving the long tail of players. Of course, this means the following analysis and plots all come with the caveat that they're really only applicable for the 50% of shots from the "shootingest" players.
+
+Second, the plot below indicates that by season, the distribution of shots taken across players has been roughly consistent. Even during the 2019-20 season (which included the bubble), this remained the case. In this regard, it seems as though the bubble had no impact. Note that we cannot break this data into only the bubble period, because this data is not available broken down by date (unless we downloaded every player's shot data -- which we wanted to avoid as discussed earlier).
+```{r}
+player_seasonal_shots <- read.csv('data/files/fga_by_player_2017-22.csv')
+
+player_seasonal_shots |>
+  group_by(season) |>
+  mutate(rank=rank(-FGA, ties.method = 'min')) |>
+  arrange(season, rank) |>
+  group_by(season) |>
+  mutate(cumul_FGA = cumsum(FGA)) |>
+  group_by(season) |>
+  mutate(cumul_pct = cumul_FGA / sum(FGA)) |>
+  ggplot(aes(rank, cumul_pct, group=season, color=season)) +
+  geom_line() +
+  geom_vline(aes(xintercept=100), linetype='dotted', color='black') +
+  geom_text(
+    aes(90, 0.8), size=3, color='black', angle=90, label='Pulled up to 100th player', show.legend = F
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_x_continuous(breaks=seq(0, 600, by=100)) +
+  xlab('Player rank by shots taken') +
+  ylab('Percent of all shots taken by up to x\'th player') + 
+  ggtitle('Cumulative sum of shots taken by NBA players, by season')
+```
+The graphs below show heatmaps of the count of shots taken from each position on the court, broken down by pre/during/post-bubble periods. There are a few things worth noting here:
+- Figuring out how to properly draw the courts was tedious and took a lot of time. This was achieved with the assistance of [this article](https://towardsdatascience.com/make-a-simple-nba-shot-chart-with-python-e5d70db45d0d), which showed how to do something similar in Python.
+- Our initial attempt at plotting these heatmaps wasn't particularly useful because the number of shots taken near the hoop far exceeds any other court region, which meant the only area that had any color was under the hoop. So, we rescaled by taking the log of shot count, in order to get a better visual color gradation. Keep in mind that the colors here are therefore not proportional to true shot count.
+
+In terms of analysis on these graphs, it's hard to conclude anything strongly. The reality of shots during the bubble period is that there were far fewer, to the point where some places on the court had no shots at all. This makes the heatmaps look quite different and so they are difficult to compare. Perhaps the only thing we might conclude is in regards to shots taken on the three point line. In the non-bubble periods, there are three darker "clusters" in the middle, on the top left, and on the top right of the three point line. However, for the bubble plot, it seems as though there's no obvious clusting of shots, and it's more evenly distributed along the three point line. This suggests some variation in location of shots taken during in bubble.
+
+```{r}
+shots <- read.csv('data/files/shot_data_2017-2022.csv')
+shots$game_date <- as.Date(shots$game_date)
+shots <- mutate(shots, loc_y=loc_y+50)  # this is easier for plotting -- nba data puts basketball rim at 0 but court extends lower to -50
+shots$loc_x_bkt <- as.character((shots$loc_x %/% 10) * 10)
+shots$loc_y_bkt <- as.character((shots$loc_y %/% 10) * 10)
+shots$loc_label <- paste(shots$loc_x_bkt, shots$loc_y_bkt, sep='_')
+shots$shot_made_flag <- as.logical(shots$shot_made_flag)
+
+# bubble was from 2020-03-11 to 2020-10-11
+shots$period_label <- case_when(
+  shots$game_date < as.Date('2020-03-11') ~ 'pre-bubble',
+  shots$game_date <= as.Date('2020-10-11') ~ 'bubble',
+  T ~ 'post-bubble'
+)
+bubble_shots <- shots |> filter(period_label == 'bubble')
+pre_shots <- shots |> filter(period_label == 'pre-bubble')
+post_shots <- shots |> filter(period_label == 'post-bubble')
+```
+
+```{r}
+court_lines = data.frame(
+  x=c(-220, 220, -220, -220, 220, 220, -80, -80, 80, 80, -60, -60, 60, 60, -80, 80, -30, 30),
+  y=c(0, 0, 0, 140, 0, 140, 0, 190, 0, 190, 0, 190, 0, 190, 190, 190, 40, 40),
+  group=c(0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8)
+)
+
+plot_court <- function(plot) {
+  court <- plot +
+    geom_line(data=court_lines, aes(x, y, group=group)) +
+    geom_arc(aes(x0=0, y0=50.8, start=-1.19, end=1.19, r=237.39)) +
+    geom_circle(aes(x0=0, y0=60, r=15)) +
+    geom_circle(aes(x0=0, y0=190, r=60)) +
+    coord_fixed() +
+    ylim(0, 350) +
+    theme_bw() +
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.border = element_blank(),
+      plot.background = element_blank(),
+      axis.text.x=element_blank(),
+      axis.ticks.x=element_blank(),
+      axis.text.y=element_blank(),
+      axis.ticks.y=element_blank(),
+      axis.title.x=element_blank(),
+      axis.title.y=element_blank()
+    )
+  return(court)
+}
+```
+
+```{r}
+pre_shots_heatmap <- (ggplot() +
+  geom_hex(
+    data=pre_shots,
+    aes(loc_x, loc_y, fill=stat(log2(count)), color=stat(log2(count))),
+    binwidth=c(10,10),
+  ) +
+  scale_fill_gradient(low = "white", high = "blue") +
+  scale_color_gradient(low = "white", high = "blue") +
+  labs(
+    color='Shots taken\nfrom position\n(log2-scaled)', 
+    fill='Shots taken\nfrom position\n(log2-scaled)'
+  )
+) |>
+  plot_court()
+
+bubble_shots_heatmap <- (ggplot() +
+  geom_hex(
+    data=bubble_shots ,
+    aes(loc_x, loc_y, fill=stat(log2(count)), color=stat(log2(count))),
+    binwidth=c(10,10),
+  ) +
+  scale_fill_gradient(low = "white", high = "blue") +
+  scale_color_gradient(low = "white", high = "blue") +
+  labs(
+    color='Shots taken\nfrom position\n(log2-scaled)', 
+    fill='Shots taken\nfrom position\n(log2-scaled)'
+  )
+) |>
+  plot_court()
+
+post_shots_heatmap <- (ggplot() +
+  geom_hex(
+    data=post_shots,
+    aes(loc_x, loc_y, fill=stat(log2(count)), color=stat(log2(count))),
+    binwidth=c(10,10),
+  ) +
+  scale_fill_gradient(low = "white", high = "blue") +
+  scale_color_gradient(low = "white", high = "blue") +
+  labs(
+    color='Shots taken\nfrom position\n(log2-scaled)', 
+    fill='Shots taken\nfrom position\n(log2-scaled)'
+  )
+) |>
+  plot_court()
+
+plot_grid(
+  pre_shots_heatmap, bubble_shots_heatmap, post_shots_heatmap,
+  labels=c('Pre-bubble', 'Bubble', 'Post-bubble'),
+  align='hv', top='a'
+)
+```
+The graphs below help dig further into the clustering noted above. They plot each shot taken as a point, along with countour curves that surround the most prominent clusterings of points. This approach helps us see shot locations more granularly. The countours here are more or less the same across plots, except for in the regions above the three point line as described above. These contours validate our earlier conclusion: in the bubble, shots were taken relatively evenly along the three point line, while in the other periods there was some sort of triad of clustering.
+```{r}
+pre_shots_scatter <- (
+  ggplot() +
+  geom_point(data=pre_shots, aes(loc_x, loc_y), alpha=.004) +
+  geom_density_2d(data=pre_shots, aes(loc_x, loc_y))
+) |> plot_court()
+
+bubble_shots_scatter <- (
+  ggplot() +
+  geom_point(data=bubble_shots, aes(loc_x, loc_y), alpha=.04) +
+  geom_density_2d(data=bubble_shots, aes(loc_x, loc_y))
+) |> plot_court()
+
+post_shots_scatter <- (
+  ggplot() +
+  geom_point(data=post_shots, aes(loc_x, loc_y), alpha=.005) +
+  geom_density_2d(data=post_shots, aes(loc_x, loc_y))
+) |> plot_court()
+
+plot_grid(
+  pre_shots_scatter, bubble_shots_scatter, post_shots_scatter,
+  labels=c('Pre-bubble shots', 'Bubble shot shots', 'Post-bubble shots'),
+  align='hv'
+)
+```
+
+The graph below investigates shot accuracy instead of total shots taken. Here, the rows reflect a 10-unit segment of the court; for example, `-10_300` is the region on the court spanning -20 to -10 on the x-axis and 300 to 310 on the y-axis. We only show the 40 regions that had the highest number of total shots taken.
+
+Although not universally true, this plot shows that accuracy in the bubble, by court region, generally was higher than in the other periods. Accuracy in the bubble was highest for a disproportionate number of regions (nearly half), and was lowest for roughly 1/3 of regions (which is expected). This outpaces both other periods. As such, we can conclude from this graph that accuracy in the top court regions was higher in the bubble.
+
+```{r}
+top_shot_locs <- shots |>
+  group_by(loc_label) |>
+  summarize(n=n()) |>
+  arrange(desc(n)) |>
+  head(40)
+shot_pct_top <- shots |>
+  group_by(period_label, loc_label) |>
+  summarize(pct_made = sum(shot_made_flag) / n(), n=n()) |>
+  ungroup() |> filter(loc_label %in% top_shot_locs$loc_label)
+
+ggplot(
+  shot_pct_top,
+  aes(
+    pct_made,
+    fct_reorder2(loc_label, period_label=='bubble', pct_made, .desc=F),
+    color=period_label
+  )
+) +
+  geom_point() +
+  scale_x_continuous(labels = scales::percent) +
+  labs(color='Time period') +
+  xlab('Percent of shots made') +
+  ylab('Region on court as xcoord_ycoord') + 
+  ggtitle('Percent of shots made by time period, in top 40 court regions by count')
+```
