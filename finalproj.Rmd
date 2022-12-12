@@ -1,0 +1,435 @@
+--- 
+title: "NBA Project"
+author: "Yunchen Jiang, Akshay Iyengar, Conor Ryan"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+# Introduction
+
+We chose to explore various components of NBA data because we all have a common interest in the NBA. For any readers unfamiliar, the NBA is the National Basketball Association and is the highest level of professional basketball played in North America. As a sport, basketball provides a rich opportunity for data collection, which is why we were interested in seeing if we could create interesting visualizations from it. All parts of the sport -- from the many different teams and players, to the many different head-to-head games throughout the season, to the granular play-by-play shooting activity -- provide potentially interesting areas for us to explore within data.
+
+One important phenomenon to note was the "bubble" period created by COVID-19 during the 2020 season. This was the NBA's solution to enable the continuation of the season despite the pandemic; it involved a bio-secured facility in Florida where players were silo'd from the world while they played games to finish the season. In much of our analysis, we focused on this period to try and see if there were any interesting trends that came about during the bubble period.
+
+<!--chapter:end:index.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Proposal
+
+## Research topic
+Our research topic generally deals with NBA player/game data. Since that is such a big area, we will focus our attention in particular to more recent years. If needed, we may also later focus on particular teams to make the task manageable and allow us to gain more interesting insights.
+
+The primary topic we intend to explore is if there have been any significant shifts in basketball patterns due to COVID. This will involve considering three periods: pre, during (the "bubble" phenomenon), and post. We'd like to understand if any players' stats in particular shifted dramatically across these periods. It would also be interesting to understand if the significant "shifts" across all players were typical over such a period, or if the "bubble" might have exacerbated these trends. Another topic we'd like to explore is if any fundamentals of gameplay changed across these periods. For example, did people start shooting more three-pointers or half-court-shots? Did free-throw accuracy change noticeably?
+
+One complication in all of this will be trying to isolate normal trends from those created by COVID. For example, if we observe any variation, is that variation within a reasonable expectation historically in the NBA, or does it seem like a true outlier potentially attributable to the COVID period?
+
+## Data availability
+There are a lot of places to get basketball stats from, so we will consider several sources and ultimately focus on the one that works best in practice for the questions we're trying to answer.
+
+Various sports news sites, like ESPN, CBS, etc. will be a good starting point. The data from such sources is typically collected by the organizations themselves. We can trust these with relative ease, as these are good sources who put their reputation on the line by reporting with these statistics. Data is updated in near real time, so we will look to collect their historical data and "lock" it in time. These sites typically do not make their data available in any particularly friendly way, so we will need to web scrape these pages, download them in HTML format, and extract tabular format from them with R. We will also need to be careful when getting the data and not violate their privacy policies. There are no known issues with this data currently.
+
+There are also many other external organizations that aggregate data which we can try and use. Basketball-reference.com (run by Sports-reference.com) will be one such valuable resource to us. Their data is extremely verbose, potentially moreso than that provided by news organizations, so it may end up being more useful. One thing worth considering is that they serve as an aggregator of data, meaning they combine proprietary data from many other sources, so although they do not do collection themselves, they may also be the only way of retrieving the data in this format. They do not name their upstream vendors. We will look to do more research and try and get as close to the data collectors as possible, but it's feasible they are the best option simply because of licensing agreements and the obviously strict nature of professional sports statistics. Their [Terms of Use](https://www.sports-reference.com/termsofuse.html) makes clear that they allow anyone to download and use their data as long as a reference is provided and the data is not used to compete against them as a provider. They restrict web-scraping to twenty requests per minute, so we will remain mindful of this. Most of their statistics pages also make it relatively easy to just download a CSV, so to "lock" our data in place and avoid any scraping issues, we will seek to manually download their data where feasible. This will then be simple enough to import into R. There are no known issues with their data. They claim to respond to all email, so if we have issues, we can try and contact them (although they request a week to respond).
+
+Bibliography:
+[Wikipedia](https://en.m.wikipedia.org/wiki/2020_NBA_Bubble)
+
+[StatMuse](https://www.statmuse.com/nba/ask/best-offensive-rating-team-list-in-the-bubble)
+
+[ESPN](https://www.espn.com/nba/standings/_/season/2020)
+
+[Basketball-Reference](https://www.basketball-reference.com/)
+
+<!--chapter:end:proposal.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Data 
+
+```{r}
+# remotes::install_github("jtr13/redav")
+library(redav)
+```
+
+## Sources
+
+We got data from ESPN. For part of our data, I went to scrape the data and get it from ESPN. Because of this, we were able to get a bunch of tables from different years and teams. We needed to make sure that webscraping the data from the site is legal and ethical. That is why we didn't edit any of the numbers and made sure the data was in the correct format. After using a library called Rvest, I was able to grab both western and eastern conferences as a table. Then, I repeated doing this for multiple seasons in order to get data for all teams and growth across the years. Some of the problems with the table was that it wasn't in order like the ESPN by position. The table wasn't combined and there wasn't indicators for years or conferences. The teams also were in a format that wouldn't be able to be grouped in a graph. For example, the team was like "Milwakee Bucksz" which is different than the team name because it had the letter or position combined. This took some cleaning and transformation, which will get talked about below. There were about 90 records considering 3 seasons and 30 NBA teams. Some of the variables are team name, team name adjusted- which is a clean abbreviated name for team, conference type- western or eastern, year- when season started, and more. Some of the numerical variables dealt with points per game, opponent points per game, wins, and losses. 
+
+### Shot data
+We pulled granular shot data directly from the NBA's public APIs for games from 2017 to 2022. The NBA itself collects and publishes this data. They make this data available for use (according to their [Terms of Use](https://www.nba.com/termsofuse)) so long as it is not used for profit, and as long as NBA.com is given attribution. Consider this that attribution, so usage of this data is permissible for this project.
+
+The NBA offers a substantial number of public APIs for accessing different statistics. We used a [python package](https://github.com/swar/nba_api) to help access those APIs. Specifically, we downloaded two datasets using this API:
+- shot-by-shot locations (as in, place on the basketball court). Each row reflects one shot, along with identifying columns like who shot it, their team at the time, how far it was from the hoop, date, and season. This is a substantial dataset with nearly 500k rows and over 50mb in size.
+- aggregated total number of shots by player and season. This is a small dataset since it's aggregated; no more than 3k rows.
+
+Extracting this data took a substantial amount of time and effort, which won't necessarily be reflected by the resulting visualizations, so we wanted to make that time spent clear here. There were several reasons for this:
+- The Python API, while helpful relative to the NBA's API, was poorly documented.
+- We discovered that the NBA's API has some secret rate-blocking mechanism to prevent DDOS. We figured this out after getting our IP address temporarily blocked by their servers. After resolving this, we learned that this meant in practice we had to sleep one second between API calls. This doesn't sound like much of a problem, but the API to extract granular player shots requires one call per player and season. There are several hundreds of players each season, and each API call also might take several seconds itself, so it would have taken many hours to get the entirety of shot data. To resolve this, we ended up only pulling the shots of the 100 players who shot the most each season. This top-shooting-player information was determined by the data in `data/files/fga_by_player_2017-22.csv` (pulled via `data/pull/fga_by_player.py`). Then we extracted shot data via `data/pull/shot_data.py` and stored it in `data/files/shot_data_2017-22.csv`. This is still a substantial amount of data, and we provide justification for this approach later in Results -- long story short, this allows us to analyze roughly 50% of shot data without wasting hours pulling the data.
+
+
+## Cleaning / transformation
+
+Cleaning is done in the data folder section with the code files. The cleaning is always an ongoing process in the data science process. Starting with the seasonal data, getting it into a tabular csv form was a lengthy process. Extracting using rvest gets the table into separated table values. There were 4 tables for one year using rvest. Each table represented one of two things either a list of teams or the list of variable values related to the team for the season performance per conference. We had to join the the teams with the list of values using its row names. Later on, row names was converted into an integer so we could have a position of the team within the respective conference. We also added a category column to indicate whether eastern or western conference something that might be useful to denote. Once that was done, the eastern and western conference tables were merged into one using a union command. We added a year, which would be converted to an integer to denote the start of the season for that table. This was repeated for the next two following seasons. In order to get a big table full of all 3 seasons we union_all the data frames to get all value combinations for the final data frame for season performances. A unique thing while looking at the data set was the name for the team was combined with positions/bye performances, which were denoted by special letters such as y or z. In order to clean this, we created a column called ACT_TEAM, which is an abbreviation of the letters of the team. Using a regular expression formula, we were able to extract the 3 NBA letter. Now, not everything can be accurate to the NBA abbreviation, which is why human oversight over data is so important. We were able to adapt and change 4 of the abbreviations to match the NBA ones.
+
+The shot data did not require much cleaning / transformation. We did most of it in the data pull Python script; it only involved things like selecting and renaming columns. In R, we also did a few simple things to coerce column types and appropriately label the different play periods (pre, during and post-bubble) so we could visualize any differences.
+
+## Missing value analysis
+Here is one of the tables for the seasonal data. The seasons data has no missing variable as you can see and no rows are missing. There is a complete case file for all the rows showing that there is no missing data or patterns. This is because when getting the ESPN data, it contains all of the statistics for the season and there is no missing data from the site. This is definitely one of the perks of getting data directly from the source itself.
+
+```{r}
+library(redav)
+df_all = read.csv('./data/files/Season.csv')
+plot_missing(df_all, percent = FALSE)
+```
+
+
+
+### Shot data
+The below shows that there were no missing values for the shot dataset.
+```{r}
+shots <- read.csv('data/files/shot_data_2017-2022.csv')
+plot_missing(bubble_shots)
+```
+
+
+<!--chapter:end:data.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+```{r}
+# PUT ALL LIBRARIES UP HERE
+library(ggplot2)
+library(tidyverse)
+library(ggforce)
+library(cowplot)
+```
+
+
+# Results
+Here we grab the data, which is referred to in the data section. We end up grabbing from espn and merging the tables together based on the teams, conferences, and years. This is talked about more in the data section.
+```{r}
+df_all = read.csv('./data/files/Season.csv')
+df_all
+```
+We start with the first graph below based on the NBA data, where we see the fluctuations in points in a stacked bar chart where we see by year if the bar lengthens or gets smaller for PPG. This will help determine if offensive identity was different from the bubble than years past.
+```{r}
+# make a couple of graphs
+#create a bar chart based on ppg per year per team
+library(ggplot2)
+library(tidyr)
+
+ggplot(df_all, aes(x = PPG, y = ACT_TEAM, fill = YEAR)) +
+  geom_bar(stat = "identity")
+```
+In the next graph, we want to plot opponents points per game versus points per game scored. We are going to take a specific look at 2019 so we can plot offensive and defensive prowess and see what teams in which conferences benefitted that year.
+```{r}
+# make a couple of graphs
+#create a bar chart based on ppg per year per team
+library(ggplot2)
+library(tidyr)
+#create longer field based on using tidy pacakge so we can plot points per game and points againsts
+#filter by year so 2019 represents bubble and make graph clear by getting seperate east and west categorys
+df_adj = gather(df_all, PPG_WL, VAL, PPG:OPP.PPG)
+df_adj_2019_e = df_adj %>% 
+  filter(YEAR == "2019") %>%
+  filter(CAT == 'E')
+
+df_adj_2019_w = df_adj %>% 
+  filter(YEAR == "2019") %>%
+  filter(CAT == 'W')
+
+ggplot(df_adj_2019_e, aes(x = ACT_TEAM, y = VAL, fill = PPG_WL)) +
+  geom_bar(stat = "identity", position = 'dodge')+
+  ggtitle("EAST CONFERENCE BUBBLE PPG OFFENSIVE AND DEFENSIVE")
+
+ggplot(df_adj_2019_w, aes(x = ACT_TEAM, y = VAL, fill = PPG_WL)) +
+  geom_bar(stat = "identity", position = 'dodge')+
+  ggtitle("WEST CONFERENCE BUBBLE PPG OFFENSIVE AND DEFENSIVE")
+```
+
+```{r}
+# make a couple of graphs
+#create a bar chart based on position for team
+top_3 = select(df_all, ACT_TEAM, Position, YEAR, CAT) %>%
+  filter(Position <= 3) %>%
+  filter(YEAR == 2019)
+#top_3
+#note teams equal MIL, TOR, LAL, LAC, BOS, DEN
+teams = c('MIL', 'TOR', 'LAL','LAC','BOS','DEN')
+
+# https://community.rstudio.com/t/how-to-filter-a-dataframe-based-on-a-list-of-values-from-one-column/79881/2- use link to help with filtering 
+
+trend_team = select(df_all, ACT_TEAM, Position, W, YEAR, CAT) %>%
+filter(ACT_TEAM %in% teams)
+
+# https://stackoverflow.com/questions/27082601/ggplot2-line-chart-gives-geom-path-each-group-consist-of-only-one-observation - use this for numeric graph path conversion
+trend_team$YEAR = as.numeric(as.character(trend_team$YEAR))
+#trend_team
+ggplot(trend_team, aes(x = YEAR, y = Position, colors = ACT_TEAM))+
+  geom_path(aes(color = ACT_TEAM))+
+  scale_y_reverse()
+
+
+```
+
+```{r}
+library(lubridate) 
+# make a couple of graphs
+#https://www.geeksforgeeks.org/how-to-add-labels-over-each-bar-in-barplot-in-r/- use this for geom_text
+trend_team
+ggplot(trend_team, aes(x = YEAR, y = W, colors = ACT_TEAM))+
+  geom_path(aes(color = ACT_TEAM))+
+  geom_text(aes(label = signif(W)), nudge_y = 1)
+
+
+```
+
+## Shot data
+As noted in the data sources section, for this data, we only pulled shot data for the top 100 players each season. The graph below shows that doing so, regardless of season, generally accounts for about 50% of the season's shots. 
+
+First, this justifies our decision to only pull the first 100 players' shots. This gave us a substantial amount of data without needing to spend time retrieving the long tail of players. Of course, this means the following analysis and plots all come with the caveat that they're really only applicable for the 50% of shots from the "shootingest" players.
+
+Second, the plot below indicates that by season, the distribution of shots taken across players has been roughly consistent. Even during the 2019-20 season (which included the bubble), this remained the case. In this regard, it seems as though the bubble had no impact. Note that we cannot break this data into only the bubble period, because this data is not available broken down by date (unless we downloaded every player's shot data -- which we wanted to avoid as discussed earlier).
+```{r}
+player_seasonal_shots <- read.csv('data/files/fga_by_player_2017-22.csv')
+
+player_seasonal_shots |>
+  group_by(season) |>
+  mutate(rank=rank(-FGA, ties.method = 'min')) |>
+  arrange(season, rank) |>
+  group_by(season) |>
+  mutate(cumul_FGA = cumsum(FGA)) |>
+  group_by(season) |>
+  mutate(cumul_pct = cumul_FGA / sum(FGA)) |>
+  ggplot(aes(rank, cumul_pct, group=season, color=season)) +
+  geom_line() +
+  geom_vline(aes(xintercept=100), linetype='dotted', color='black') +
+  geom_text(
+    aes(90, 0.8), size=3, color='black', angle=90, label='Pulled up to 100th player', show.legend = F
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_x_continuous(breaks=seq(0, 600, by=100)) +
+  xlab('Player rank by shots taken') +
+  ylab('Percent of all shots taken by up to x\'th player') + 
+  ggtitle('Cumulative sum of shots taken by NBA players, by season')
+```
+The graphs below show heatmaps of the count of shots taken from each position on the court, broken down by pre/during/post-bubble periods. There are a few things worth noting here:
+- Figuring out how to properly draw the courts was tedious and took a lot of time. This was achieved with the assistance of [this article](https://towardsdatascience.com/make-a-simple-nba-shot-chart-with-python-e5d70db45d0d), which showed how to do something similar in Python.
+- Our initial attempt at plotting these heatmaps wasn't particularly useful because the number of shots taken near the hoop far exceeds any other court region, which meant the only area that had any color was under the hoop. So, we rescaled by taking the log of shot count, in order to get a better visual color gradation. Keep in mind that the colors here are therefore not proportional to true shot count.
+
+In terms of analysis on these graphs, it's hard to conclude anything strongly. The reality of shots during the bubble period is that there were far fewer, to the point where some places on the court had no shots at all. This makes the heatmaps look quite different and so they are difficult to compare. Perhaps the only thing we might conclude is in regards to shots taken on the three point line. In the non-bubble periods, there are three darker "clusters" in the middle, on the top left, and on the top right of the three point line. However, for the bubble plot, it seems as though there's no obvious clusting of shots, and it's more evenly distributed along the three point line. This suggests some variation in location of shots taken during in bubble.
+
+```{r}
+shots <- read.csv('data/files/shot_data_2017-2022.csv')
+shots$game_date <- as.Date(shots$game_date)
+shots <- mutate(shots, loc_y=loc_y+50)  # this is easier for plotting -- nba data puts basketball rim at 0 but court extends lower to -50
+shots$loc_x_bkt <- as.character((shots$loc_x %/% 10) * 10)
+shots$loc_y_bkt <- as.character((shots$loc_y %/% 10) * 10)
+shots$loc_label <- paste(shots$loc_x_bkt, shots$loc_y_bkt, sep='_')
+shots$shot_made_flag <- as.logical(shots$shot_made_flag)
+
+# bubble was from 2020-03-11 to 2020-10-11
+shots$period_label <- case_when(
+  shots$game_date < as.Date('2020-03-11') ~ 'pre-bubble',
+  shots$game_date <= as.Date('2020-10-11') ~ 'bubble',
+  T ~ 'post-bubble'
+)
+bubble_shots <- shots |> filter(period_label == 'bubble')
+pre_shots <- shots |> filter(period_label == 'pre-bubble')
+post_shots <- shots |> filter(period_label == 'post-bubble')
+```
+
+```{r}
+court_lines = data.frame(
+  x=c(-220, 220, -220, -220, 220, 220, -80, -80, 80, 80, -60, -60, 60, 60, -80, 80, -30, 30),
+  y=c(0, 0, 0, 140, 0, 140, 0, 190, 0, 190, 0, 190, 0, 190, 190, 190, 40, 40),
+  group=c(0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8)
+)
+
+plot_court <- function(plot) {
+  court <- plot +
+    geom_line(data=court_lines, aes(x, y, group=group)) +
+    geom_arc(aes(x0=0, y0=50.8, start=-1.19, end=1.19, r=237.39)) +
+    geom_circle(aes(x0=0, y0=60, r=15)) +
+    geom_circle(aes(x0=0, y0=190, r=60)) +
+    coord_fixed() +
+    ylim(0, 350) +
+    theme_bw() +
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.border = element_blank(),
+      plot.background = element_blank(),
+      axis.text.x=element_blank(),
+      axis.ticks.x=element_blank(),
+      axis.text.y=element_blank(),
+      axis.ticks.y=element_blank(),
+      axis.title.x=element_blank(),
+      axis.title.y=element_blank()
+    )
+  return(court)
+}
+```
+
+```{r}
+pre_shots_heatmap <- (ggplot() +
+  geom_hex(
+    data=pre_shots,
+    aes(loc_x, loc_y, fill=stat(log2(count)), color=stat(log2(count))),
+    binwidth=c(10,10),
+  ) +
+  scale_fill_gradient(low = "white", high = "blue") +
+  scale_color_gradient(low = "white", high = "blue") +
+  labs(
+    color='Shots taken\nfrom position\n(log2-scaled)', 
+    fill='Shots taken\nfrom position\n(log2-scaled)'
+  )
+) |>
+  plot_court()
+
+bubble_shots_heatmap <- (ggplot() +
+  geom_hex(
+    data=bubble_shots ,
+    aes(loc_x, loc_y, fill=stat(log2(count)), color=stat(log2(count))),
+    binwidth=c(10,10),
+  ) +
+  scale_fill_gradient(low = "white", high = "blue") +
+  scale_color_gradient(low = "white", high = "blue") +
+  labs(
+    color='Shots taken\nfrom position\n(log2-scaled)', 
+    fill='Shots taken\nfrom position\n(log2-scaled)'
+  )
+) |>
+  plot_court()
+
+post_shots_heatmap <- (ggplot() +
+  geom_hex(
+    data=post_shots,
+    aes(loc_x, loc_y, fill=stat(log2(count)), color=stat(log2(count))),
+    binwidth=c(10,10),
+  ) +
+  scale_fill_gradient(low = "white", high = "blue") +
+  scale_color_gradient(low = "white", high = "blue") +
+  labs(
+    color='Shots taken\nfrom position\n(log2-scaled)', 
+    fill='Shots taken\nfrom position\n(log2-scaled)'
+  )
+) |>
+  plot_court()
+
+plot_grid(
+  pre_shots_heatmap, bubble_shots_heatmap, post_shots_heatmap,
+  labels=c('Pre-bubble', 'Bubble', 'Post-bubble'),
+  align='hv', top='a'
+)
+```
+The graphs below help dig further into the clustering noted above. They plot each shot taken as a point, along with countour curves that surround the most prominent clusterings of points. This approach helps us see shot locations more granularly. The countours here are more or less the same across plots, except for in the regions above the three point line as described above. These contours validate our earlier conclusion: in the bubble, shots were taken relatively evenly along the three point line, while in the other periods there was some sort of triad of clustering.
+```{r}
+pre_shots_scatter <- (
+  ggplot() +
+  geom_point(data=pre_shots, aes(loc_x, loc_y), alpha=.004) +
+  geom_density_2d(data=pre_shots, aes(loc_x, loc_y))
+) |> plot_court()
+
+bubble_shots_scatter <- (
+  ggplot() +
+  geom_point(data=bubble_shots, aes(loc_x, loc_y), alpha=.04) +
+  geom_density_2d(data=bubble_shots, aes(loc_x, loc_y))
+) |> plot_court()
+
+post_shots_scatter <- (
+  ggplot() +
+  geom_point(data=post_shots, aes(loc_x, loc_y), alpha=.005) +
+  geom_density_2d(data=post_shots, aes(loc_x, loc_y))
+) |> plot_court()
+
+plot_grid(
+  pre_shots_scatter, bubble_shots_scatter, post_shots_scatter,
+  labels=c('Pre-bubble shots', 'Bubble shot shots', 'Post-bubble shots'),
+  align='hv'
+)
+```
+
+The graph below investigates shot accuracy instead of total shots taken. Here, the rows reflect a 10-unit segment of the court; for example, `-10_300` is the region on the court spanning -20 to -10 on the x-axis and 300 to 310 on the y-axis. We only show the 40 regions that had the highest number of total shots taken.
+
+Although not universally true, this plot shows that accuracy in the bubble, by court region, generally was higher than in the other periods. Accuracy in the bubble was highest for a disproportionate number of regions (nearly half), and was lowest for roughly 1/3 of regions (which is expected). This outpaces both other periods. As such, we can conclude from this graph that accuracy in the top court regions was higher in the bubble.
+
+```{r}
+top_shot_locs <- shots |>
+  group_by(loc_label) |>
+  summarize(n=n()) |>
+  arrange(desc(n)) |>
+  head(40)
+shot_pct_top <- shots |>
+  group_by(period_label, loc_label) |>
+  summarize(pct_made = sum(shot_made_flag) / n(), n=n()) |>
+  ungroup() |> filter(loc_label %in% top_shot_locs$loc_label)
+
+ggplot(
+  shot_pct_top,
+  aes(
+    pct_made,
+    fct_reorder2(loc_label, period_label=='bubble', pct_made, .desc=F),
+    color=period_label
+  )
+) +
+  geom_point() +
+  scale_x_continuous(labels = scales::percent) +
+  labs(color='Time period') +
+  xlab('Percent of shots made') +
+  ylab('Region on court as xcoord_ycoord') + 
+  ggtitle('Percent of shots made by time period, in top 40 court regions by count')
+```
+
+<!--chapter:end:results.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Interactive component
+
+
+
+<!--chapter:end:interactive.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Conclusion
+
+The main takeaways of our exploration start with the process of beginning a data science visualization project. We were able to see different breakdown of player data and season performance. The graphs visually entice the audience and provide powerful messages about how people performed in different years in a professional basketball league. We would love to pull all seasons data complete with everything. This would be a lengthy amount considering the NBA pulls back to 100s of years ago. Also, the team data would look very different as there were different teams and league points can't be compared because of the size of the league back then and now. For the future for season performance, we would love to explore additional variables such as coach impact and injuries. These variables might be able to provide a powerful association for how a team performs in the league and in post-season/playoffs. Some of the lessons learned are that gathering the right data takes the right questions and right primary sources. Because the sources are primary, our insights can be more generalized. The right kinds of color and visualizations do really make the project. Audiences can be pulled in to a really good story and the visualization can tell that story if it fits or makes sense with the data.
+
+In regards to shot data, in the future we'd like to pull data for all players instead of only the top 100. With enough time and resources, this should be possible. Doing so would roughly double our dataset, so hopefully the trends we've observed here would hold.
+
+<!--chapter:end:conclusion.Rmd-->
+
