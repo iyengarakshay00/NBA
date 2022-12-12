@@ -1,0 +1,16 @@
+introduction
+proposal
+research-topic
+data-availability
+data
+sources
+season-data
+shot-data
+cleaning-transformation
+missing-value-analysis
+season-data-1
+shot-data-1
+results
+shot-data-2
+interactive-component
+conclusion
