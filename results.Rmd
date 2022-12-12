@@ -14,7 +14,7 @@ library(lubridate)
 Here we grab the data, which is referred to in the data section. We end up grabbing from espn and merging the tables together based on the teams, conferences, and years. This is talked about more in the data section.
 ```{r}
 df_all = read.csv('./data/files/Season.csv')
-df_all
+
 ```
 We start with the first graph below based on the NBA data, where we see the fluctuations in points in a stacked bar chart where we see by year if the bar lengthens or gets smaller for PPG. Here we can see diverging bars where some of the teams have less PPG than years before. For example, Milwaukee increased from the bubble year which is 2019 whereas Denver decreased in PPG. This will help determine if offensive identity was different from the bubble than years past.
 ```{r}

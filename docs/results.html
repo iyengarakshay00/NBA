@@ -120,143 +120,30 @@
 <div id="results" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Results<a href="results.html#results" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>Here we grab the data, which is referred to in the data section. We end up grabbing from espn and merging the tables together based on the teams, conferences, and years. This is talked about more in the data section.</p>
-<pre><code>##    Position                            Team  W  L   PCT   GB  HOME  AWAY  DIV  CONF   PPG OPP.PPG DIFF STRK
-## 1         1         1z --MILMilwaukee Bucks 56 17 0.767    -  30-5 26-12 13-1  37-7 118.7   108.6 10.1   L1
-## 2         2         2y --TORToronto Raptors 53 19 0.736  2.5 26-10  27-9  9-5 34-11 112.8   106.5  6.3   W4
-## 3         1      1z --LALLos Angeles Lakers 52 19 0.732    - 25-10  27-9 10-3 36-10 113.4   107.6  5.8   L1
-## 4         2             2x --LACLA Clippers 49 23 0.681  3.5  27-9 22-14  8-6 32-16 116.3   109.9  6.4   W2
-## 5         3          3x --BOSBoston Celtics 48 24 0.667  7.5 26-10 22-14  9-6 30-13 113.7   107.3  6.4   L1
-## 6         3          3y --DENDenver Nuggets 46 27 0.630    7 26-11 20-16 12-2 29-16 111.3   109.2  2.1   L3
-## 7         4          4x --INDIndiana Pacers 45 28 0.616   11 25-11 20-17  8-7 28-19 109.4   107.5  1.9   W2
-## 8         4         4y --HOUHouston Rockets 44 28 0.611  8.5 24-12 20-16  8-5 28-19 117.8   114.8  3.0   L3
-## 9         5   5x --OKCOklahoma City Thunder 44 28 0.611  8.5 23-14 21-14  8-5 27-19 110.4   108.4  2.0   L1
-## 10        6              6x --UTAHUtah Jazz 44 28 0.611  8.5 23-12 21-16  5-7 24-21 111.3   108.8  2.5   W1
-## 11        5              5y --MIAMiami Heat 44 29 0.603   12  29-7 15-22 10-4 30-13 112.0   109.1  2.9   L2
-## 12        6      6x --PHIPhiladelphia 76ers 43 30 0.589   13  31-4 12-26 11-5 28-18 110.7   108.4  2.3   W1
-## 13        7        7x --DALDallas Mavericks 43 32 0.573   11 20-18 23-14 10-4 27-20 117.0   112.1  4.9   L2
-## 14        7           7x --BKNBrooklyn Nets 35 37 0.486 20.5 20-16 15-21 6-10 23-23 111.8   112.4 -0.6   L1
-## 15        8 8xp --PORPortland Trail Blazers 35 39 0.473 18.5 21-15 14-24  5-8 20-27 115.0   116.1 -1.1   W3
-## 16        9       pb --MEMMemphis Grizzlies 34 39 0.466   19 20-17 14-22  4-9 20-26 112.6   113.7 -1.1   W1
-## 17       10             e --PHXPhoenix Suns 34 39 0.466   19 17-22 17-17  6-9 19-27 113.6   113.4  0.2   W8
-## 18       11         e --SASan Antonio Spurs 32 39 0.451   20 19-15 13-24  7-6 20-23 114.1   115.2 -1.1   L1
-## 19        8           8x --ORLOrlando Magic 33 40 0.452   23 18-17 15-23  9-5 20-23 107.3   108.3 -1.0   W1
-## 20       12         e --SACSacramento Kings 31 41 0.431 21.5 16-19 15-22  8-5 23-23 110.1   112.1 -2.0   W2
-## 21        9        e --CHACharlotte Hornets 23 42 0.354   29 10-21 13-21  2-7 16-24 102.9   109.6 -6.7   W1
-## 22       13      e --NONew Orleans Pelicans 30 42 0.417 22.5 15-21 15-21  4-9 18-30 115.8   117.1 -1.3   L3
-## 23       11            e --CHIChicago Bulls 22 43 0.338   30 14-20  8-23  7-9 15-28 106.8   109.9 -3.1   W1
-## 24       12           e --NYNew York Knicks 21 45 0.318 31.5 11-22 10-23 2-11 15-28 105.8   112.3 -6.5   W1
-## 25       14   e --MINMinnesota Timberwolves 19 45 0.297 29.5  8-24 11-21 2-10  9-30 113.3   117.5 -4.2   L3
-## 26       13          e --DETDetroit Pistons 20 46 0.303 32.5 11-22  9-24 5-10 12-31 107.2   110.8 -3.6   L5
-## 27       15      e --CLECleveland Cavaliers 19 46 0.292   33 11-25  8-21 4-10 12-32 106.9   114.8 -7.9   L1
-## 28       10       e --WSHWashington Wizards 25 47 0.347 30.5 16-20  9-27  5-9 18-27 114.4   119.1 -4.7   W1
-## 29       14            e --ATLAtlanta Hawks 20 47 0.299   33 14-20  6-27  6-7 11-32 111.8   119.7 -7.9   L1
-## 30       15     e --GSGolden State Warriors 15 50 0.231   34  8-26  7-24 2-11  9-34 106.3   115.0 -8.7   L1
-## 31        1              1* --UTAHUtah Jazz 52 20 0.722    -  31-5 21-15  7-5 28-14 116.4   107.2  9.2   W2
-## 32        2            2y --PHXPhoenix Suns 51 21 0.708    1  27-9 24-12  7-5 30-12 115.3   109.5  5.8   W3
-## 33        1      1z --PHIPhiladelphia 76ers 49 23 0.681    -  29-7 20-16 10-2 31-11 113.6   108.1  5.5   W2
-## 34        2           2x --BKNBrooklyn Nets 48 24 0.667    1  28-8 20-16  8-4 26-16 118.6   114.1  4.5   W5
-## 35        3          3x --DENDenver Nuggets 47 25 0.653    5 25-11 22-14  9-3 26-16 115.1   110.1  5.0   L1
-## 36        4             4x --LACLA Clippers 47 25 0.653    5 26-10 21-15  9-3 27-15 114.0   107.8  6.2   L2
-## 37        3         3y --MILMilwaukee Bucks 46 26 0.639    3 26-10 20-16 11-1 30-12 120.1   114.2  5.9   L1
-## 38        5        5y --DALDallas Mavericks 42 30 0.583   10 21-15 21-15  7-5 21-21 112.4   110.2  2.2   L1
-## 39        6  6x --PORPortland Trail Blazers 42 30 0.583   10 20-16 22-14  6-6 23-19 116.1   114.3  1.8   W1
-## 40        7     7xp --LALLos Angeles Lakers 42 30 0.583   10 21-15 21-15  4-8 25-17 109.5   106.8  2.7   W5
-## 41        4          4x --NYNew York Knicks 41 31 0.569    8 25-11 16-20  4-8 25-17 107.0   104.7  2.3   W3
-## 42        5           5y --ATLAtlanta Hawks 41 31 0.569    8 25-11 16-20  9-3 24-18 113.7   111.4  2.3   W4
-## 43        6              6x --MIAMiami Heat 40 32 0.556    9 21-15 19-17  6-6 24-18 108.1   108.0  0.1   W1
-## 44        9   9pb --GSGolden State Warriors 39 33 0.542   13 25-11 14-22  5-7 25-17 113.7   112.7  1.0   W6
-## 45        8      8xp --MEMMemphis Grizzlies 38 34 0.528   14 18-18 20-16  6-6 19-23 113.3   112.3  1.0   L1
-## 46        7         7xp --BOSBoston Celtics 36 36 0.500   13 21-15 15-21  4-8 20-22 112.6   111.2  1.4   L1
-## 47        8     8xp --WSHWashington Wizards 34 38 0.472   15 19-17 15-21  3-9 16-26 116.6   118.5 -1.9   W2
-## 48        9         9pb --INDIndiana Pacers 34 38 0.472   15 13-23 21-15  7-5 20-22 115.3   115.3  0.0   W1
-## 49       10     10pb --CHACharlotte Hornets 33 39 0.458   16 18-18 15-21  8-4 20-22 109.5   111.4 -1.9   L5
-## 50       10      10pb --SASan Antonio Spurs 33 39 0.458   19 14-22 19-17  6-6 17-25 111.1   112.8 -1.7   L4
-## 51       11            e --CHIChicago Bulls 31 41 0.431   18 15-21 16-20  7-5 21-21 110.7   111.6 -0.9   W1
-## 52       11      e --NONew Orleans Pelicans 31 41 0.431   21 18-18 13-23  6-6 18-24 114.6   114.9 -0.3   L4
-## 53       12         e --SACSacramento Kings 31 41 0.431   21 16-20 15-21  5-7 18-24 113.7   117.4 -3.7   L3
-## 54       12          e --TORToronto Raptors 27 45 0.375   22 16-20 11-25  4-8 17-25 111.3   111.7 -0.4   L7
-## 55       13   e --MINMinnesota Timberwolves 23 49 0.319   29 13-23 10-26  5-7 15-27 112.1   117.7 -5.6   W1
-##    L10 CAT YEAR ACT_TEAM
-## 1  3-7   E 2019      MIL
-## 2  9-1   E 2019      TOR
-## 3  4-6   W 2019      LAL
-## 4  6-4   W 2019      LAC
-## 5  6-4   E 2019      BOS
-## 6  4-6   W 2019      DEN
-## 7  7-3   E 2019      IND
-## 8  5-5   W 2019      HOU
-## 9  6-4   W 2019      OKC
-## 10 4-6   W 2019      UTA
-## 11 4-6   E 2019      MIA
-## 12 5-5   E 2019      PHI
-## 13 4-6   W 2019      DAL
-## 14 7-3   E 2019      BKN
-## 15 7-3   W 2019      POR
-## 16 3-7   W 2019      MEM
-## 17 9-1   W 2019      PHX
-## 18 6-4   W 2019      SAS
-## 19 5-5   E 2019      ORL
-## 20 4-6   W 2019      SAC
-## 21 4-6   E 2019      CHA
-## 22 4-6   W 2019      NOP
-## 23 3-7   E 2019      CHI
-## 24 4-6   E 2019      NYK
-## 25 3-7   W 2019      MIN
-## 26 1-9   E 2019      DET
-## 27 4-6   E 2019      CLE
-## 28 2-8   E 2019      WAS
-## 29 4-6   E 2019      ATL
-## 30 3-7   W 2019      GSW
-## 31 7-3   W 2020      UTA
-## 32 7-3   W 2020      PHX
-## 33 8-2   E 2020      PHI
-## 34 6-4   E 2020      BKN
-## 35 6-4   W 2020      DEN
-## 36 4-6   W 2020      LAC
-## 37 8-2   E 2020      MIL
-## 38 8-2   W 2020      DAL
-## 39 8-2   W 2020      POR
-## 40 6-4   W 2020      LAL
-## 41 7-3   E 2020      NYK
-## 42 7-3   E 2020      ATL
-## 43 8-2   E 2020      MIA
-## 44 8-2   W 2020      GSW
-## 45 6-4   W 2020      MEM
-## 46 4-6   E 2020      BOS
-## 47 6-4   E 2020      WAS
-## 48 5-5   E 2020      IND
-## 49 3-7   E 2020      CHA
-## 50 2-8   W 2020      SAS
-## 51 5-5   E 2020      CHI
-## 52 4-6   W 2020      NOP
-## 53 6-4   W 2020      SAC
-## 54 1-9   E 2020      TOR
-## 55 5-5   W 2020      MIN
-##  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 35 rows ]</code></pre>
 <p>We start with the first graph below based on the NBA data, where we see the fluctuations in points in a stacked bar chart where we see by year if the bar lengthens or gets smaller for PPG. Here we can see diverging bars where some of the teams have less PPG than years before. For example, Milwaukee increased from the bubble year which is 2019 whereas Denver decreased in PPG. This will help determine if offensive identity was different from the bubble than years past.
-<img src="finalproj_files/figure-html/unnamed-chunk-30-1.png" width="672" />
+<img src="finalproj_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 In the next graph, we want to plot opponents points per game versus points per game scored. We are going to take a specific look at 2019 so we can plot offensive and defensive prowess and see what teams in which conferences benefited that year. Specifically, we separate by conference and see in-depth analysis with teams. During the bubble, we can see from the graph that some teams like Milwaukee and Boston had both offensive and defensive prowess from the gap in the bars of opponent ppg and ppg. Some teams like Phoenix had both offesnive and defensive ability almost equal.
-<img src="finalproj_files/figure-html/unnamed-chunk-31-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-31-2.png" width="672" />
+<img src="finalproj_files/figure-html/unnamed-chunk-11-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-11-2.png" width="672" />
 For the next graph, we can see that there are three teams that performed well from each conference in 2019. We get to take a deeper look at it and see if their position changed over the years. This can help show the audience that position of teams change over the years. From this graph, we can see LAL somehow continuously goes down considering they are the number one team from the bubble. Toronto especially takes a massive plummet in its ranking over the next year. Boston overall goes up in its ranking and we see that today especially how it performs in the NBA.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-32-1.png" width="672" />
+<p><img src="finalproj_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 We get to see some the trending three teams from the bubble again from each conference. The number of wins is shown for those same teams. We can now see another statistic from them over the yers. A cool feature is that you can label them with numbers which is what we precisely do with the lines to see the patterns. We can see the graph from below matches some of the position pattern from above. This makes sense because position and record wins/losses are related to each other. We can see that Toronto might have just had an outlier year based on the number of losses. We could potentially attribute the year before to luck or this one to an injuries.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <div id="shot-data-2" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Shot data<a href="results.html#shot-data-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>As noted in the data sources section, for this data, we only pulled shot data for the top 100 players each season. The graph below shows that doing so, regardless of season, generally accounts for about 50% of the season’s shots.</p>
 <p>First, this justifies our decision to only pull the first 100 players’ shots. This gave us a substantial amount of data without needing to spend time retrieving the long tail of players. Of course, this means the following analysis and plots all come with the caveat that they’re really only applicable for the 50% of shots from the “shootingest” players.</p>
 <p>Second, the plot below indicates that by season, the distribution of shots taken across players has been roughly consistent. Even during the 2019-20 season (which included the bubble), this remained the case. In this regard, it seems as though the bubble had no impact. Note that we cannot break this data into only the bubble period, because this data is not available broken down by date (unless we downloaded every player’s shot data – which we wanted to avoid as discussed earlier).
-<img src="finalproj_files/figure-html/unnamed-chunk-34-1.png" width="672" />
+<img src="finalproj_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 The graphs below show heatmaps of the count of shots taken from each position on the court, broken down by pre/during/post-bubble periods. There are a few things worth noting here:
 - Figuring out how to properly draw the courts was tedious and took a lot of time. This was achieved with the assistance of <a href="https://towardsdatascience.com/make-a-simple-nba-shot-chart-with-python-e5d70db45d0d">this article</a>, which showed how to do something similar in Python.
 - Our initial attempt at plotting these heatmaps wasn’t particularly useful because the number of shots taken near the hoop far exceeds any other court region, which meant the only area that had any color was under the hoop. So, we rescaled by taking the log of shot count, in order to get a better visual color gradation. Keep in mind that the colors here are therefore not proportional to true shot count.</p>
 <p>In terms of analysis on these graphs, it’s hard to conclude anything strongly. The reality of shots during the bubble period is that there were far fewer, to the point where some places on the court had no shots at all. This makes the heatmaps look quite different and so they are difficult to compare. Perhaps the only thing we might conclude is in regards to shots taken on the three point line. In the non-bubble periods, there are three darker “clusters” in the middle, on the top left, and on the top right of the three point line. However, for the bubble plot, it seems as though there’s no obvious clusting of shots, and it’s more evenly distributed along the three point line. This suggests some variation in location of shots taken during in bubble.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-37-1.png" width="672" />
+<p><img src="finalproj_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 The graphs below help dig further into the clustering noted above. They plot each shot taken as a point, along with countour curves that surround the most prominent clusterings of points. This approach helps us see shot locations more granularly. The countours here are more or less the same across plots, except for in the regions above the three point line as described above. These contours validate our earlier conclusion: in the bubble, shots were taken relatively evenly along the three point line, while in the other periods there was some sort of triad of clustering.
-<img src="finalproj_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<img src="finalproj_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>The graph below investigates shot accuracy instead of total shots taken. Here, the rows reflect a 10-unit segment of the court; for example, <code>-10_300</code> is the region on the court spanning -20 to -10 on the x-axis and 300 to 310 on the y-axis. We only show the 40 regions that had the highest number of total shots taken.</p>
 <p>Although not universally true, this plot shows that accuracy in the bubble, by court region, generally was higher than in the other periods. Accuracy in the bubble was highest for a disproportionate number of regions (nearly half), and was lowest for roughly 1/3 of regions (which is expected). This outpaces both other periods. As such, we can conclude from this graph that accuracy in the top court regions was higher in the bubble.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 
 </div>
 </div>
