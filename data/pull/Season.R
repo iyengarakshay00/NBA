@@ -129,7 +129,7 @@ df_2021$ACT_TEAM[df_2021$ACT_TEAM == 'GSG'] = 'GSW'
 #df_2021
 
 #
-df_all = union_all(df_2019, df_2020)s
+df_all = union_all(df_2019, df_2020)
 df_all = union_all(df_all, df_2021)
 
 write.csv(df_all, "Season.csv", row.names=FALSE)
