@@ -7,11 +7,15 @@ sources
 season-data
 shot-data
 cleaning-transformation
-missing-value-analysis
 season-data-1
 shot-data-1
+missing-value-analysis
+season-data-2
+shot-data-2
 results
 seasonal-data-bubble-year-and-beyond
-shot-data-2
+shot-data-3
 interactive-component
 conclusion
+lessons-learned
+future-work

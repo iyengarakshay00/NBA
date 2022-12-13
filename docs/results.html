@@ -85,20 +85,28 @@
 <li class="chapter" data-level="3.1.1" data-path="data.html"><a href="data.html#season-data"><i class="fa fa-check"></i><b>3.1.1</b> Season data</a></li>
 <li class="chapter" data-level="3.1.2" data-path="data.html"><a href="data.html#shot-data"><i class="fa fa-check"></i><b>3.1.2</b> Shot data</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#cleaning-transformation"><i class="fa fa-check"></i><b>3.2</b> Cleaning / transformation</a></li>
+<li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#cleaning-transformation"><i class="fa fa-check"></i><b>3.2</b> Cleaning / transformation</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="data.html"><a href="data.html#season-data-1"><i class="fa fa-check"></i><b>3.2.1</b> Season data</a></li>
+<li class="chapter" data-level="3.2.2" data-path="data.html"><a href="data.html#shot-data-1"><i class="fa fa-check"></i><b>3.2.2</b> Shot data</a></li>
+</ul></li>
 <li class="chapter" data-level="3.3" data-path="data.html"><a href="data.html#missing-value-analysis"><i class="fa fa-check"></i><b>3.3</b> Missing value analysis</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="data.html"><a href="data.html#season-data-1"><i class="fa fa-check"></i><b>3.3.1</b> Season Data</a></li>
-<li class="chapter" data-level="3.3.2" data-path="data.html"><a href="data.html#shot-data-1"><i class="fa fa-check"></i><b>3.3.2</b> Shot data</a></li>
+<li class="chapter" data-level="3.3.1" data-path="data.html"><a href="data.html#season-data-2"><i class="fa fa-check"></i><b>3.3.1</b> Season data</a></li>
+<li class="chapter" data-level="3.3.2" data-path="data.html"><a href="data.html#shot-data-2"><i class="fa fa-check"></i><b>3.3.2</b> Shot data</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>4</b> Results</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="results.html"><a href="results.html#seasonal-data-bubble-year-and-beyond"><i class="fa fa-check"></i><b>4.1</b> Seasonal Data Bubble Year and Beyond</a></li>
-<li class="chapter" data-level="4.2" data-path="results.html"><a href="results.html#shot-data-2"><i class="fa fa-check"></i><b>4.2</b> Shot data</a></li>
+<li class="chapter" data-level="4.2" data-path="results.html"><a href="results.html#shot-data-3"><i class="fa fa-check"></i><b>4.2</b> Shot data</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>5</b> Interactive component</a></li>
-<li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion</a></li>
+<li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="conclusion.html"><a href="conclusion.html#lessons-learned"><i class="fa fa-check"></i><b>6.1</b> Lessons learned</a></li>
+<li class="chapter" data-level="6.2" data-path="conclusion.html"><a href="conclusion.html#future-work"><i class="fa fa-check"></i><b>6.2</b> Future work</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -132,20 +140,22 @@
 <p>We get to see some the trending three teams from the bubble again from each conference. The number of wins is shown for those same teams. We can now see another statistic from them over the years. A cool feature is that you can label them with numbers which is what we precisely do with the lines to see the patterns. We can see the graph from below matches some of the position pattern from above. This makes sense because position and record wins/losses are related to each other. We can see that Toronto might have just had an outlier year based on the number of losses. We could potentially attribute the year before to luck or this one to an injuries.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
-<div id="shot-data-2" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> Shot data<a href="results.html#shot-data-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="shot-data-3" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Shot data<a href="results.html#shot-data-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>As noted in the data sources section, for this data, we only pulled shot data for the top 100 players each season. The graph below shows that doing so, regardless of season, generally accounts for about 50% of the season’s shots.</p>
 <p>First, this justifies our decision to only pull the first 100 players’ shots. This gave us a substantial amount of data without needing to spend time retrieving the long tail of players. Of course, this means the following analysis and plots all come with the caveat that they’re really only applicable for the 50% of shots from the “shootingest” players.</p>
-<p>Second, the plot below indicates that by season, the distribution of shots taken across players has been roughly consistent. Even during the 2019-20 season (which included the bubble), this remained the case. In this regard, it seems as though the bubble had no impact. Note that we cannot break this data into only the bubble period, because this data is not available broken down by date (unless we downloaded every player’s shot data – which we wanted to avoid as discussed earlier).
-<img src="finalproj_files/figure-html/unnamed-chunk-14-1.png" width="672" />
-The graphs below show heatmaps of the count of shots taken from each position on the court, broken down by pre/during/post-bubble periods. There are a few things worth noting here:
-- Figuring out how to properly draw the courts was tedious and took a lot of time. This was achieved with the assistance of <a href="https://towardsdatascience.com/make-a-simple-nba-shot-chart-with-python-e5d70db45d0d">this article</a>, which showed how to do something similar in Python.
-- Our initial attempt at plotting these heatmaps wasn’t particularly useful because the number of shots taken near the hoop far exceeds any other court region, which meant the only area that had any color was under the hoop. So, we rescaled by taking the log of shot count, in order to get a better visual color gradation. Keep in mind that the colors here are therefore not proportional to true shot count.</p>
-<p>In terms of analysis on these graphs, it’s hard to conclude anything strongly. The reality of shots during the bubble period is that there were far fewer, to the point where some places on the court had no shots at all. This makes the heatmaps look quite different and so they are difficult to compare. Perhaps the only thing we might conclude is in regards to shots taken on the three point line. In the non-bubble periods, there are three darker “clusters” in the middle, on the top left, and on the top right of the three point line. However, for the bubble plot, it seems as though there’s no obvious clusting of shots, and it’s more evenly distributed along the three point line. This suggests some variation in location of shots taken during in bubble.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-17-1.png" width="672" />
-The graphs below help dig further into the clustering noted above. They plot each shot taken as a point, along with countour curves that surround the most prominent clusterings of points. This approach helps us see shot locations more granularly. The countours here are more or less the same across plots, except for in the regions above the three point line as described above. These contours validate our earlier conclusion: in the bubble, shots were taken relatively evenly along the three point line, while in the other periods there was some sort of triad of clustering.
+<p>Second, the plot below indicates that by season, the distribution of shots taken by player rank has been roughly consistent. Even during the 2019-20 season (which included the bubble), this remained the case. In this regard, it seems as though the bubble had no impact. Note that we cannot break this data into only the bubble period, because this data is not available broken down by date (unless we downloaded every player’s shot data – which we wanted to avoid as discussed earlier).
+<img src="finalproj_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>The graphs below show heatmaps of the count of shots taken from each position on the court, broken down by pre/during/post-bubble periods. There are a few things worth noting here:</p>
+<ul>
+<li>Figuring out how to properly draw the courts was tedious and took a lot of time. This was achieved with the assistance of <a href="https://towardsdatascience.com/make-a-simple-nba-shot-chart-with-python-e5d70db45d0d">this article</a>, which showed how to do something similar in Python.</li>
+<li>Our initial attempt at plotting these heatmaps wasn’t particularly useful because the number of shots taken near the hoop far exceeds any other court region, which meant the only area that had any color was under the hoop. So, we rescaled by taking the log of shot count, in order to get a better visual color gradation. Keep in mind that the colors here are therefore not proportional to true shot count.</li>
+</ul>
+<p>In terms of analysis on these graphs, it’s hard to conclude anything strongly. The reality of shots during the bubble period is that there were far fewer, to the point where some places on the court had no shots at all. This makes the heatmaps look quite different and so they are difficult to compare. Perhaps the only thing we might conclude is in regards to shots taken on the three point line. In the non-bubble periods, there are three darker “clusters” in the middle, on the top left, and on the top right of the three point line. However, for the bubble plot, it seems as though there’s no obvious clustering of shots such that they’re evenly distributed along the three point line.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>The graphs below help dig further into the clustering noted above. They plot each shot taken as a point, along with countour curves that surround the most prominent clusterings of points. This approach helps us see shot locations more granularly. The countours here are more or less the same across plots, except for in the regions above the three point line as described above. These contours validate our earlier conclusion: in the bubble, shots were taken relatively evenly along the three point line, while in the other periods there was some sort of triad of clustering.
 <img src="finalproj_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<p>The graph below investigates shot accuracy instead of total shots taken. Here, the rows reflect a 10-unit segment of the court; for example, <code>-10_300</code> is the region on the court spanning -20 to -10 on the x-axis and 300 to 310 on the y-axis. We only show the 40 regions that had the highest number of total shots taken.</p>
+<p>The graph below investigates shot accuracy instead of total shots taken. Here, the rows reflect a 10-unit square of the court; for example, <code>-10_300</code> is the region on the court spanning -20 to -10 on the x-axis and 300 to 310 on the y-axis. For reference, the bottom left corner of each court as drawn above is at (-220, 0) and the top right corner is at (220, 350). This matches the convention of the location data exactly as given by the NBA. We only show the 40 regions that had the highest number of total shots taken.</p>
 <p>Although not universally true, this plot shows that accuracy in the bubble, by court region, generally was higher than in the other periods. Accuracy in the bubble was highest for a disproportionate number of regions (nearly half), and was lowest for roughly 1/3 of regions (which is expected). This outpaces both other periods. As such, we can conclude from this graph that accuracy in the top court regions was higher in the bubble.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 
