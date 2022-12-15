@@ -14,6 +14,7 @@ Our first data source was ESPN, which we used for aggregate team performance acr
 We also pulled granular shot data directly from the NBA's public APIs for games from 2017 to 2022. The NBA itself collects and publishes this data. They make it available for use (according to their [Terms of Use](https://www.nba.com/termsofuse)) so long as it is not used for profit, and as long as NBA.com is given attribution. Consider this that attribution, so usage of this data is permissible for this project.
 
 The NBA offers a substantial number of APIs for accessing different statistics. We used a [python package](https://github.com/swar/nba_api) to help access those APIs. Specifically, we downloaded two datasets using this API:
+
 - shot-by-shot locations (as in, place on the basketball court). Each row reflects one shot, along with identifying columns like who shot it, their team at the time, how far it was from the hoop, date, and season. This is a substantial dataset with nearly 500k rows and over 50mb in size.
 - aggregated total number of shots by player and season. This is a small dataset since it's aggregated; no more than 3k rows.
 
@@ -28,6 +29,7 @@ Scraping and cleaning is shown for this dataset in `data/pull/Season.R`. Getting
 ### Shot data
 
 Extracting the shot data took a substantial amount of time and effort, so we wanted to explicitly note that time commitment here. There were several reasons for this:
+
 - The Python library, while helpful relative to the NBA's janky API, was poorly documented.
 - We discovered that the NBA's API has some secret rate-blocking mechanism to prevent DDOS. We figured this out after getting our IP address temporarily blocked by their servers. After resolving this, we learned that this meant in practice we had to sleep one second between API calls. This doesn't sound like much of a problem, but the API to extract granular player shots requires one call per player and season. There are several hundreds of players each season, and each API call also might take several seconds itself, so it would have taken many hours to get the entirety of shot data. To resolve this, we ended up only pulling the shots of the 100 players who shot the most each season. This top-shooting-player information was determined by the data in `data/files/fga_by_player_2017-22.csv` (pulled via `data/pull/fga_by_player.py`). Then we extracted shot data via `data/pull/shot_data.py` and stored it in `data/files/shot_data_2017-22.csv`. This is still a substantial amount of data, and we provide justification for this approach later in Results -- long story short, this allows us to analyze roughly 50% of shot data without wasting hours pulling the data.
 

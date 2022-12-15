@@ -1,5 +1,7 @@
 # Interactive component
 
+Below is an interactive way to play with some of the shot location data shown in the Results section. Here, we chose one player's shots (LeBron James) and extracted his shot data for three different seasons. You can click each season to toggle which one gets shown on the court.
+
 <script src="https://d3js.org/d3.v7.js"></script>
   <svg width="900" height="620">
     <text x="200" y="20">Shot locations by LeBron James, by season.</text>
