@@ -23,7 +23,7 @@
 <meta name="author" content="Yunchen Jiang, Akshay Iyengar, Conor Ryan" />
 
 
-<meta name="date" content="2022-12-13" />
+<meta name="date" content="2022-12-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -132,32 +132,32 @@
 <h2><span class="header-section-number">4.1</span> Seasonal Data Bubble Year and Beyond<a href="results.html#seasonal-data-bubble-year-and-beyond" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Here we grab the data, which is referred to in the data section. We end up grabbing from espn and merging the tables together based on the teams, conferences, and years. This is talked about more in the data section.</p>
 <p>We start with the first graph below based on the NBA data, where we see the fluctuations in points in a Cleveland dot chart where we see by year if the dots change per team per year. We did this where we organized from top down by year 2019 PPG descending order. Here we can see diverging points where some of the teams have less PPG than years before. For example, Milwaukee increased from the bubble year which is 2019 whereas Denver decreased in PPG. Charlotte increases steadily each year in offensive points per game. Also, other patterns explored can show how PPG in 2019 related to playoff runs or playoff positions.This chart will help determine if offensive identity was different from the bubble than years past.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>In the next graph, we want to plot opponents points per game versus points per game scored. We are going to take a specific look at 2019 so we can plot offensive and defensive prowess and see what teams in which conferences benefited that year. Specifically, we separate by conference and see in-depth analysis with teams. During the bubble, we can see from the graph that some teams like Milwaukee and Boston had both offensive and defensive prowess from the gap in the bars of opponent ppg and ppg. Some teams like Phoenix had both offesnive and defensive ability almost equal.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-11-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-12-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
 <p>For the next graph, we can see that there are three teams that performed well from each conference in 2019. We get to take a deeper look at it and see if their position changed over the years. This can help show the audience that position of teams change over the years. From this graph, we can see LAL somehow continuously goes down considering they are the number one team from the bubble. Toronto especially takes a massive plummet in its ranking over the next year. Boston overall goes up in its ranking and we see that today especially how it performs in the NBA.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<p>We get to see some the trending three teams from the bubble again from each conference. The number of wins is shown for those same teams. We can now see another statistic from them over the years. A cool feature is that you can label them with numbers which is what we precisely do with the lines to see the patterns. We can see the graph from below matches some of the position pattern from above. This makes sense because position and record wins/losses are related to each other. We can see that Toronto might have just had an outlier year based on the number of losses. We could potentially attribute the year before to luck or this one to an injuries.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>We get to see some the trending three teams from the bubble again from each conference. The number of wins is shown for those same teams. We can now see another statistic from them over the years. A cool feature is that you can label them with numbers which is what we precisely do with the lines to see the patterns. We can see the graph from below matches some of the position pattern from above. This makes sense because position and record wins/losses are related to each other. We can see that Toronto might have just had an outlier year based on the number of losses. We could potentially attribute the year before to luck or this one to an injuries.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 </div>
 <div id="shot-data-3" class="section level2 hasAnchor" number="4.2">
 <h2><span class="header-section-number">4.2</span> Shot data<a href="results.html#shot-data-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>As noted in the data sources section, for this data, we only pulled shot data for the top 100 players each season. The graph below shows that doing so, regardless of season, generally accounts for about 50% of the season’s shots.</p>
 <p>First, this justifies our decision to only pull the first 100 players’ shots. This gave us a substantial amount of data without needing to spend time retrieving the long tail of players. Of course, this means the following analysis and plots all come with the caveat that they’re really only applicable for the 50% of shots from the “shootingest” players.</p>
 <p>Second, the plot below indicates that by season, the distribution of shots taken by player rank has been roughly consistent. Even during the 2019-20 season (which included the bubble), this remained the case. In this regard, it seems as though the bubble had no impact. Note that we cannot break this data into only the bubble period, because this data is not available broken down by date (unless we downloaded every player’s shot data – which we wanted to avoid as discussed earlier).
-<img src="finalproj_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<img src="finalproj_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>The graphs below show heatmaps of the count of shots taken from each position on the court, broken down by pre/during/post-bubble periods. There are a few things worth noting here:</p>
 <ul>
 <li>Figuring out how to properly draw the courts was tedious and took a lot of time. This was achieved with the assistance of <a href="https://towardsdatascience.com/make-a-simple-nba-shot-chart-with-python-e5d70db45d0d">this article</a>, which showed how to do something similar in Python.</li>
 <li>Our initial attempt at plotting these heatmaps wasn’t particularly useful because the number of shots taken near the hoop far exceeds any other court region, which meant the only area that had any color was under the hoop. So, we rescaled by taking the log of shot count, in order to get a better visual color gradation. Keep in mind that the colors here are therefore not proportional to true shot count.</li>
 </ul>
 <p>In terms of analysis on these graphs, it’s hard to conclude anything strongly. The reality of shots during the bubble period is that there were far fewer, to the point where some places on the court had no shots at all. This makes the heatmaps look quite different and so they are difficult to compare. Perhaps the only thing we might conclude is in regards to shots taken on the three point line. In the non-bubble periods, there are three darker “clusters” in the middle, on the top left, and on the top right of the three point line. However, for the bubble plot, it seems as though there’s no obvious clustering of shots such that they’re evenly distributed along the three point line.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>The graphs below help dig further into the clustering noted above. They plot each shot taken as a point, along with countour curves that surround the most prominent clusterings of points. This approach helps us see shot locations more granularly. The countours here are more or less the same across plots, except for in the regions above the three point line as described above. These contours validate our earlier conclusion: in the bubble, shots were taken relatively evenly along the three point line, while in the other periods there was some sort of triad of clustering.
-<img src="finalproj_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<img src="finalproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>The graph below investigates shot accuracy instead of total shots taken. Here, the rows reflect a 10-unit square of the court; for example, <code>-10_300</code> is the region on the court spanning -20 to -10 on the x-axis and 300 to 310 on the y-axis. For reference, the bottom left corner of each court as drawn above is at (-220, 0) and the top right corner is at (220, 350). This matches the convention of the location data exactly as given by the NBA. We only show the 40 regions that had the highest number of total shots taken.</p>
 <p>Although not universally true, this plot shows that accuracy in the bubble, by court region, generally was higher than in the other periods. Accuracy in the bubble was highest for a disproportionate number of regions (nearly half), and was lowest for roughly 1/3 of regions (which is expected). This outpaces both other periods. As such, we can conclude from this graph that accuracy in the top court regions was higher in the bubble.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 
 </div>
 </div>
