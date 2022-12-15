@@ -1,3 +1,15 @@
 # Interactive component
 
-<iframe src="lebron_shots_on_court.html" width="800" height="400"></iframe>
+<script src="https://d3js.org/d3.v7.js"></script>
+  <svg width="900" height="620">
+    <text x="200" y="20">Shot locations by LeBron James, by season.</text>
+    <image y="40"href="https://raw.githubusercontent.com/iyengarakshay00/NBA/main/data/basketball_court.png" width="712" height="497" />
+    <text x="50" y="560">Click buttons below to change season!</text>
+    <rect x="50" y="570" width="100" height="50" fill="lightblue" id="twenty19"></rect>
+    <text x="70" y="600">2019-20</text>
+    <rect x="175" y="570" width="100" height="50" fill="lightblue" id="twenty20"></rect>
+    <text x="195" y="600">2020-21</text>
+    <rect x="300" y="570" width="100" height="50" fill="lightblue" id="twenty21"></rect>
+    <text x="320" y="600">2021-22</text>
+  </svg>
+<script src="interactive_js.js"></script>
