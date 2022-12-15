@@ -8,6 +8,7 @@ library(cowplot)
 library(forcats)
 library(lubridate) 
 library(viridis)
+library(ggalluvial)
 ```
 
 
@@ -101,6 +102,27 @@ ggplot(trend_team, aes(x = YEAR, y = W, colors = ACT_TEAM))+
   geom_path(aes(color = ACT_TEAM))+
   geom_text(aes(label = signif(W)), nudge_y = 1)+
   ggtitle("Wins vs Year of Top Three Teams")
+
+
+```
+
+We take in a couple of columns of the data and use year, team, category: west or east, and pct(winning/total games). Once we do that, we create a new column that factors in poor, average, and excellent performance based on less than .4, greater than or equal .4 but less than .6 and greater than or equal to .6 respectively as indicator measures. We create a alluvial plot to show a flow of change of teams from each respective category from each year to see difference in performances and fill based on team. This graph just adds a different perspective with regards to the east versus west difficulty during these years. We can see that there are overall some more poor west performers. We can also note the specific flow of each team like Atlanta going from poor to average performance flow based on the years. This can be used in further exploration to explore team performance in spite of scoring statistics and see if there are unique phenomena.
+
+```{r}
+
+# alluvial plot - west/east, year-bubble and post-bubble, pct
+df_perf = df_all %>%
+  select(YEAR, ACT_TEAM,CAT,PCT)%>%
+  mutate(PCT_PERF = ifelse(PCT < .4, "POOR", ifelse(PCT < .6, "AVERAGE", "EXCELLENT")))
+df_perf$YEAR = as.factor(df_perf$YEAR)
+df_perf
+ggplot(df_perf, aes(axis1 = CAT, axis2 = YEAR, axis3 = PCT_PERF)) +
+  geom_alluvium(aes(fill = ACT_TEAM), width = 1/12) +
+  geom_stratum() +
+  geom_text(stat = "stratum", aes(label = paste(after_stat(stratum), "\n", after_stat(count)))) +
+  scale_x_discrete(limits = c("CAT", "YEAR", "PCT_PERF")) +
+  ggtitle("Flow of Team Performance Throughout Years")
+         
 
 
 ```
