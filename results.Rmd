@@ -115,7 +115,7 @@ df_perf = df_all %>%
   select(YEAR, ACT_TEAM,CAT,PCT)%>%
   mutate(PCT_PERF = ifelse(PCT < .4, "POOR", ifelse(PCT < .6, "AVERAGE", "EXCELLENT")))
 df_perf$YEAR = as.factor(df_perf$YEAR)
-df_perf
+#df_perf
 ggplot(df_perf, aes(axis1 = CAT, axis2 = YEAR, axis3 = PCT_PERF)) +
   geom_alluvium(aes(fill = ACT_TEAM), width = 1/12) +
   geom_stratum() +
