@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 5 Interactive component | NBA Project</title>
   <meta name="description" content="Chapter 5 Interactive component | NBA Project" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 5 Interactive component | NBA Project" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Yunchen Jiang, Akshay Iyengar, Conor Ryan" />
 
 
-<meta name="date" content="2022-12-14" />
+<meta name="date" content="2022-12-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -128,8 +128,19 @@
             <section class="normal" id="section-">
 <div id="interactive-component" class="section level1 hasAnchor" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Interactive component<a href="interactive-component.html#interactive-component" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<iframe src="lebron_shots_on_court.html" width="800" height="400">
-</iframe>
+<script src="https://d3js.org/d3.v7.js"></script>
+<svg width="900" height="620">
+<text x="200" y="20">Shot locations by LeBron James, by season.</text>
+<image y="40"href="https://raw.githubusercontent.com/iyengarakshay00/NBA/main/data/basketball_court.png" width="712" height="497" />
+<text x="50" y="560">Click buttons below to change season!</text>
+<rect x="50" y="570" width="100" height="50" fill="lightblue" id="twenty19"></rect>
+<text x="70" y="600">2019-20</text>
+<rect x="175" y="570" width="100" height="50" fill="lightblue" id="twenty20"></rect>
+<text x="195" y="600">2020-21</text>
+<rect x="300" y="570" width="100" height="50" fill="lightblue" id="twenty21"></rect>
+<text x="320" y="600">2021-22</text>
+</svg>
+<script src="interactive_js.js"></script>
 
 </div>
             </section>
