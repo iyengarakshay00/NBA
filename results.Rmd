@@ -62,6 +62,12 @@ ggplot(df_adj_2019_w, aes(x = ACT_TEAM, y = VAL, fill = PPG_WL)) +
   ggtitle("WEST CONFERENCE BUBBLE PPG OFFENSIVE AND DEFENSIVE")
 ```
 
+For the next graph, we want to compare opponents points per game and points per game scored over past three years to look for overall trend in offensive and defensive capabilities of teams in the league. From the graph, we can see that the points tend to contract towards the bottom left of the graph, so we can see that the team's offense and defense tend to weaken after the bubble year, which could also be the result of a slower pace of play with fewer rounds. 
+```{r}
+ggplot(df_all, aes(PPG, OPP.PPG)) +  
+  geom_point() +  
+  facet_wrap(~YEAR) 
+```
 
 For the next graph, we can see that there are three teams that performed well from each conference in 2019. We get to take a deeper look at it and see if their position changed over the years. This can help show the audience that position of teams change over the years. From this graph, we can see LAL somehow continuously goes down considering they are the number one team from the bubble. Toronto especially takes a massive plummet in its ranking over the next year. Boston overall goes up in its ranking and we see that today especially how it performs in the NBA.
 
